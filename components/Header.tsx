@@ -5,6 +5,34 @@ import Link from "next/link";
 import Image from "next/image";
 import { companyData } from "@/library/GlobalDateConfig";
 
+// メニュー項目の型定義
+type MenuItem = {
+  label: string;
+  href: string | null;
+  submenu?: { label: string; href: string }[];
+};
+
+// メニュー項目をデータとして定義
+const menuItems: MenuItem[] = [
+  {
+    label: "Conextを知る",
+    href: null,
+    submenu: [
+      { label: "SERVICE", href: "#service" },
+      { label: "PROJECT", href: "#project" },
+      { label: "VOICE", href: "#voice" },
+    ],
+  },
+  {
+    label: "企業情報",
+    href: "#company",
+  },
+  {
+    label: "採用情報",
+    href: "#recruit",
+  },
+];
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -20,62 +48,46 @@ export default function Header() {
               width={120}
               height={40}
               className="h-10 w-auto"
+              quality={100}
+              priority
+              unoptimized
             />
           </Link>
 
           {/* デスクトップメニュー */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="#about" className="text-gray-700 hover:text-black transition-colors">
-              経営理念
-            </Link>
-            <div className="relative group">
-              <button className="text-gray-700 hover:text-black transition-colors">
-                知る
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link href="#about" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  について
-                </Link>
-                <Link href="#stance" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  こだわり
-                </Link>
-                <Link href="#data" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  数字でみる
-                </Link>
+            {menuItems.map((item, index) => (
+              <div key={index}>
+                {item.submenu ? (
+                  <div className="relative group">
+                    <button className="text-gray-700 hover:text-black transition-colors">
+                      {item.label}
+                    </button>
+                    <div className="absolute top-full left-0 pt-2 hidden group-hover:block">
+                      <ul className="w-48 bg-white shadow-lg rounded-md border border-gray-100 list-none p-0 m-0">
+                        {item.submenu.map((subItem, subIndex) => (
+                          <li key={subIndex} className="first:rounded-t-md last:rounded-b-md">
+                            <Link
+                              href={subItem.href}
+                              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            >
+                              {subItem.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    href={item.href!}
+                    className="text-gray-700 hover:text-black transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </div>
-            </div>
-            <div className="relative group">
-              <button className="text-gray-700 hover:text-black transition-colors">
-                極める
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link href="#mind" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  仕入れの極意
-                </Link>
-                <Link href="#item" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  戦略
-                </Link>
-                <Link href="#history" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  軌跡
-                </Link>
-              </div>
-            </div>
-            <div className="relative group">
-              <button className="text-gray-700 hover:text-black transition-colors">
-                破る
-              </button>
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link href="#member" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  型破りな社員たち
-                </Link>
-                <Link href="#special" className="block px-4 py-2 text-sm hover:bg-gray-50">
-                  SHOWTIME SHOW
-                </Link>
-              </div>
-            </div>
-            <Link href="#recruit" className="text-gray-700 hover:text-black transition-colors">
-              採用情報
-            </Link>
+            ))}
             <Link
               href="#entry"
               className="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors"
@@ -118,36 +130,33 @@ export default function Header() {
         {/* モバイルメニュー */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-2">
-            <Link href="#about" className="block py-2 text-gray-700">
-              経営理念
-            </Link>
-            <Link href="#about" className="block py-2 text-gray-700">
-              について
-            </Link>
-            <Link href="#stance" className="block py-2 text-gray-700">
-              こだわり
-            </Link>
-            <Link href="#data" className="block py-2 text-gray-700">
-              数字でみる
-            </Link>
-            <Link href="#mind" className="block py-2 text-gray-700">
-              仕入れの極意
-            </Link>
-            <Link href="#item" className="block py-2 text-gray-700">
-              戦略
-            </Link>
-            <Link href="#history" className="block py-2 text-gray-700">
-              軌跡
-            </Link>
-            <Link href="#member" className="block py-2 text-gray-700">
-              型破りな社員たち
-            </Link>
-            <Link href="#special" className="block py-2 text-gray-700">
-              SHOWTIME SHOW
-            </Link>
-            <Link href="#recruit" className="block py-2 text-gray-700">
-              採用情報
-            </Link>
+            {menuItems.map((item, index) => (
+              <div key={index}>
+                {item.submenu ? (
+                  <>
+                    <div className="py-2 text-gray-700 font-semibold">
+                      {item.label}
+                    </div>
+                    <ul className="list-none p-0 m-0">
+                      {item.submenu.map((subItem, subIndex) => (
+                        <li key={subIndex}>
+                          <Link
+                            href={subItem.href}
+                            className="block py-2 pl-4 text-gray-700"
+                          >
+                            {subItem.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                ) : (
+                  <Link href={item.href!} className="block py-2 text-gray-700">
+                    {item.label}
+                  </Link>
+                )}
+              </div>
+            ))}
             <Link
               href="#entry"
               className="block bg-black text-white px-6 py-2 rounded-md text-center mt-4"

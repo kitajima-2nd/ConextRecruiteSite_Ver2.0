@@ -81,7 +81,7 @@ export interface CompanyData {
     businessDescription: "サッカーイベントの企画・運営、営業（人材育成）",
     
     logo: {
-      path: "/images/logo.png",
+      path: "/images/logo1_transparent.png",
       alt: "Conext Markting ロゴ",
     },
     
