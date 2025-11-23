@@ -30,7 +30,7 @@ export default function HeroSection() {
         {/* Toppage_Image.png - 薄くした背景画像 */}
         <div className="absolute inset-0 w-full h-full z-10 opacity-40">
           <Image
-            src="/images/Toppage_Image.png"
+            src="/images/TopPage_Image.png"
             alt="背景画像"
             fill
             className="object-cover"
