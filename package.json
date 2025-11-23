@@ -1,0 +1,31 @@
+{
+  "name": "conext-recruitsite",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "clean": "node -e \"const fs=require('fs');const path=require('path');function rmdir(p){if(fs.existsSync(p)){fs.readdirSync(p).forEach(f=>{const fp=path.join(p,f);if(fs.lstatSync(fp).isDirectory())rmdir(fp);else fs.unlinkSync(fp);});fs.rmdirSync(p);}};['.next','node_modules/.cache','.turbo'].forEach(d=>rmdir(d));\""
+  },
+  "dependencies": {
+    "@react-three/fiber": "^9.4.0",
+    "motion": "^12.23.24",
+    "next": "16.0.3",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "three": "^0.181.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/three": "^0.181.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.3",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
