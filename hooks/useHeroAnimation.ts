@@ -20,7 +20,7 @@ export function useHeroAnimation() {
   return {
     isLoaded,
     fadeInTransition,
-    opacityClass: isLoaded ? "opacity-100" : "opacity-0",
+    opacityClass: isLoaded ? " opacity-100" : " opacity-0",
   };
 }
 

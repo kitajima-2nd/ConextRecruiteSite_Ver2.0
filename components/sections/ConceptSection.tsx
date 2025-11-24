@@ -1,9 +1,43 @@
 "use client";
 
+import Image from "next/image";
+import { motion } from "motion/react";
+
 export default function ConceptSection() {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="py-20 bg-white relative min-h-screen">
+      {/* 背景画像の設定 */}
+        {/* 浅沼背景画像 */}
+        <motion.div
+          initial={{ x:"100%" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.2 }}
+          className="absolute inset-0 w-full h-full z-0"
+        >
+          <Image
+            src="/images/asanuma_bk.png"
+            alt="浅沼背景画像"
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+        {/* 浅沼オンリー画像 */}
+        <motion.div
+          initial={{ x:"-100%" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.2 , delay: 0.3 }}
+          className="absolute inset-0 w-full h-full z-10"
+        >
+          <Image
+            src="/images/asanuma_only.png"
+            alt="浅沼オンリー画像"
+            fill
+            className="object-cover"
+            priority
+          />
+        </motion.div>
+      <div className="absolute z-20 container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             サッカーで「繋がる」「広がる」

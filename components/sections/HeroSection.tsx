@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion } from "motion/react";
 import { useHeroAnimation } from "@/hooks/useHeroAnimation";
 
 export default function HeroSection() {
@@ -16,8 +17,13 @@ export default function HeroSection() {
         {/* グラデーションオーバーレイ */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/80 z-20" />
         
-        {/* member_image.jpg - 前面の画像 */}
-        <div className="absolute inset-0 w-full h-full z-0 ">
+        {/* member_image.jpg - 背面の画像 */}
+        <motion.div 
+          initial={{ x:"-100%" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="absolute inset-0 w-full h-full z-0 "
+          >
           <Image
             src="/images/member_image.jpg"
             alt="メンバー画像"
@@ -25,10 +31,15 @@ export default function HeroSection() {
             className="object-cover"
             priority
           />
-        </div>
+        </motion.div>
 
-        {/* Toppage_Image.png - 薄くした背景画像 */}
-        <div className="absolute inset-0 w-full h-full z-10 opacity-40">
+        {/* Toppage_Image.png - 薄くした前面画像 */}
+        <motion.div
+          className="absolute inset-0 w-full h-full z-10 opacity-40"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.4 }}
+          transition={{ duration: 0.5 , delay: 0.5}}
+          >
           <Image
             src="/images/TopPage_Image.png"
             alt="背景画像"
@@ -36,11 +47,11 @@ export default function HeroSection() {
             className="object-cover"
             priority
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* メインコンテンツ */}
-      <div className={`relative z-20 text-left text-white px-4 transition-opacity duration-1000 ${opacityClass}`}>
+      <div className={`relative z-20 text-left text-white px-4 transition-opacity duration-2000 delay-1000 ${opacityClass}`}>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
           Be a <span className="text-primary text-blue-900">Soccer</span> Company
         </h1>
