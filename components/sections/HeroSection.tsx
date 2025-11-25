@@ -32,9 +32,23 @@ export default function HeroSection() {
             priority
           />
         </motion.div>
+        <div className="
+          clip-hexagon absolute z-30 frex
+          bottom-10 right-[-25%] w-130 h-112 
+          sm:scale-100 sm:right-[-5%]
+          md:scale-130 md:bottom-20 md:right-25"
+        >
+          <Image
+            src="/images/logo_Image.png"
+            alt="メンバー画像"
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
 
         {/* Toppage_Image.png - 薄くした前面画像 */}
-        <motion.div
+        {/* <motion.div
           className="absolute inset-0 w-full h-full z-10 opacity-40"
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.4 }}
@@ -47,7 +61,7 @@ export default function HeroSection() {
             className="object-cover"
             priority
           />
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* メインコンテンツ */}
@@ -67,7 +81,7 @@ export default function HeroSection() {
       </div>
 
       {/* ボタン - 画面下側中央に配置 */}
-      <div className={`absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex flex-col sm:flex-row gap-4 justify-center items-center transition-opacity duration-1000 ${opacityClass}`}>
+      {/* <div className={`absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex flex-col sm:flex-row gap-4 justify-center items-center transition-opacity duration-1000 ${opacityClass}`}>
         <a
           href="#entry"
           className="bg-white text-black px-8 py-4 rounded-md font-bold hover:bg-gray-200 transition-colors"
@@ -80,7 +94,7 @@ export default function HeroSection() {
         >
           詳しく見る
         </a>
-      </div>
+      </div> */}
 
       {/* スクロールインジケーター */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
