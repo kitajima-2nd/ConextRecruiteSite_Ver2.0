@@ -1,0 +1,40 @@
+"use client";
+
+import { ReactNode, forwardRef } from "react";
+import { motion } from "motion/react";
+import { useSectionFade } from "@/hooks/useSectionFade";
+
+interface AnimatedSectionProps {
+  children: ReactNode;
+  className?: string;
+  id?: string;
+  as?: "section" | "div";
+}
+
+/**
+ * セクションのフェードイン・フェードアウトを自動で適用するラッパーコンポーネント
+ * セクションが50%以上見えたらフェードイン、50%以下になったらフェードアウト
+ */
+export default function AnimatedSection({
+  children,
+  className = "",
+  id,
+  as = "section",
+}: AnimatedSectionProps) {
+  const { ref, isVisible } = useSectionFade();
+
+  const Component = as;
+
+  return (
+    <Component ref={ref as any} id={id} className={className}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isVisible ? 1 : 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
+    </Component>
+  );
+}
+

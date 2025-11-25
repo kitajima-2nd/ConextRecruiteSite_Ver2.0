@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default function ConceptSection() {
   return (
-    <section className="py-20 bg-white relative min-h-screen">
+    <AnimatedSection className="py-20 bg-white relative min-h-screen">
       {/* 背景画像の設定 */}
         {/* 浅沼背景画像 */}
         <motion.div
@@ -65,7 +66,7 @@ export default function ConceptSection() {
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

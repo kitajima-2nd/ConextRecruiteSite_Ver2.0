@@ -1,8 +1,11 @@
+"use client";
+
 import { companyData } from "@/library/GlobalDateConfig";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default function RecruitSection() {
   return (
-    <section id="recruit" className="py-20 bg-black text-white">
+    <AnimatedSection id="recruit" className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -80,7 +83,7 @@ export default function RecruitSection() {
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

@@ -52,6 +52,15 @@ export interface CompanyData {
       email?: string;
       phone?: string;
     };
+    
+    // ヒーローセクション用スライドショー画像
+    heroSlideshow?: {
+      images: {
+        path: string;
+        alt: string;
+      }[];
+      interval?: number; // スライド切り替え間隔（ミリ秒）
+    };
   }
   
   export const companyData: CompanyData = {
@@ -95,5 +104,24 @@ export interface CompanyData {
     recruitment: {
       email: "ここにtestをいれます",
       phone: "ここにtestをいれます",
+    },
+    
+    // ヒーローセクション用スライドショー画像
+    heroSlideshow: {
+      images: [
+        {
+          path: "/images/logo_Image.png",
+          alt: "Conext Markting ロゴ",
+        },
+        {
+          path: "/images/member_image.jpg",
+          alt: "メンバー画像",
+        },
+        {
+          path: "/images/soccerball_image.jpg",
+          alt: "サッカーボール",
+        },
+      ],
+      interval: 3000, // 3秒ごとに切り替え
     },
   };

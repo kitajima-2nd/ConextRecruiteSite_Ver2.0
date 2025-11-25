@@ -1,8 +1,10 @@
 "use client";
 
+import AnimatedSection from "@/components/AnimatedSection";
+
 export default function ShowtimeSection() {
   return (
-    <section className="py-20 bg-black text-white">
+    <AnimatedSection className="py-20 bg-black text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -43,7 +45,7 @@ export default function ShowtimeSection() {
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

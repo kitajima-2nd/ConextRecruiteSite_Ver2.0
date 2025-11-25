@@ -1,6 +1,10 @@
+"use client";
+
+import AnimatedSection from "@/components/AnimatedSection";
+
 export default function MasterSection() {
   return (
-    <section className="py-20 bg-gray-50">
+    <AnimatedSection className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -91,7 +95,7 @@ export default function MasterSection() {
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 

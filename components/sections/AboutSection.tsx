@@ -1,8 +1,11 @@
+"use client";
+
 import Image from "next/image";
+import AnimatedSection from "@/components/AnimatedSection";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-20 bg-white">
+    <AnimatedSection id="about" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
@@ -93,7 +96,7 @@ export default function AboutSection() {
           </div>
         </div>
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
 
