@@ -4,7 +4,7 @@ import { companyData } from "@/library/GlobalDateConfig";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
+    <footer className="snap-section-end bg-black text-white">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* ロゴと会社情報 */}

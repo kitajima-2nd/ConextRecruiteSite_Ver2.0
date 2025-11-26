@@ -30,7 +30,7 @@ export default function HeroSection() {
 
   
   return (
-    <section className="relative h-screen flex items-start justify-start px-5 py-30 overflow-hidden bg-white">
+    <section className="snap-section relative h-screen flex items-start justify-start px-5 py-30 overflow-hidden bg-white">
       {/* 左側コンテンツ */}
       <div className={`z-20 text-left text-gray-800 px-4 transition-opacity duration-2000 delay-1000 ${opacityClass}`}>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
