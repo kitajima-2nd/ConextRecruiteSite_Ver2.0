@@ -118,8 +118,20 @@ export interface CompanyData {
           alt: "メンバー画像",
         },
         {
-          path: "/images/soccerball_image.jpg",
-          alt: "サッカーボール",
+          path: "/images/slide_image2.jpg",
+          alt: "入社式社員集合写真",
+        },
+        {
+          path: "/images/slide_image.jpg",
+          alt: "入社式風景",
+        },
+        {
+          path: "/images/Recruitment_image.jpg",
+          alt: "フットサル",
+        },
+        {
+          path: "/images/background_image_top.jpg",
+          alt: "大会風景",
         },
       ],
       interval: 3000, // 3秒ごとに切り替え

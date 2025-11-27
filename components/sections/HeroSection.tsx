@@ -14,19 +14,37 @@ export default function HeroSection() {
 
   // スライドショー用の状態管理
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFirstImageVisible, setIsFirstImageVisible] = useState(true);
   const images = companyData.heroSlideshow?.images || [];
   const interval = companyData.heroSlideshow?.interval || 3000;
+  const slideImages = images.slice(1); // 2番目以降の画像
+  const firstImage = images[0]; // 最初の画像
 
-  // スライドショーの自動切り替え
+  // 最初の画像を3秒表示後、フェードアウトしてスライドショーを開始
   useEffect(() => {
     if (images.length === 0) return;
 
-    const timer = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    // 最初の画像を3秒表示後、フェードアウト
+    const firstTimer = setTimeout(() => {
+      setIsFirstImageVisible(false);
+      // フェードアウト完了後にスライドショー開始
+      setTimeout(() => {
+        setCurrentIndex(0);
+      }, 600); // フェードアウトのdurationに合わせる
+    }, 3000);
+
+    // スライドショーの自動切り替え（2番目以降のみ）
+    const slideTimer = setInterval(() => {
+      if (!isFirstImageVisible && slideImages.length > 0) {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % slideImages.length);
+      }
     }, interval);
 
-    return () => clearInterval(timer);
-  }, [images.length, interval]);
+    return () => {
+      clearTimeout(firstTimer);
+      clearInterval(slideTimer);
+    };
+  }, [images.length, interval, isFirstImageVisible, slideImages.length]);
 
   
   return (
@@ -71,27 +89,50 @@ export default function HeroSection() {
             max-w-[982.8px] max-h-[845.21px]
           `}
         >
-          {/* スライドショー - 横スライド */}
-          <AnimatePresence>
-            {images.length > 0 && (
+          {/* 最初の画像 - 独立して表示、右からスライドイン、3秒後にフェードアウト */}
+          {firstImage && (
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ 
+                x: 0,
+                opacity: isFirstImageVisible ? 1 : 0
+              }}
+              transition={{ 
+                x: { duration: 0.4, ease: "easeInOut" },
+                opacity: { duration: 0.3, delay: isFirstImageVisible ? 0 : 0, ease: "easeOut" }
+              }}
+              className="absolute inset-0 z-40"
+            >
+              <Image
+                src={firstImage.path}
+                alt={firstImage.alt}
+                fill
+                className="object-cover scale-150"
+                priority
+              />
+            </motion.div>
+          )}
+
+          {/* スライドショー - 2番目以降の画像をループ表示 */}
+          {!isFirstImageVisible && slideImages.length > 0 && (
+            <AnimatePresence>
               <motion.div
-                key={currentIndex}
+                key={`slide-${currentIndex}`}
                 initial={{ x: "100%" }}
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="absolute inset-0"
+                className="absolute inset-0 z-30"
               >
                 <Image
-                  src={images[currentIndex].path}
-                  alt={images[currentIndex].alt}
+                  src={slideImages[currentIndex].path}
+                  alt={slideImages[currentIndex].alt}
                   fill
                   className="object-cover"
-                  priority={currentIndex === 0}
                 />
               </motion.div>
-            )}
-          </AnimatePresence>
+            </AnimatePresence>
+          )}
         </div>
       </div>
 
