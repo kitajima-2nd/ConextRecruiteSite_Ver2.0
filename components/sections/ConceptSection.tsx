@@ -14,6 +14,9 @@ function ConceptContent() {
 
   return (
     <>
+      {/* 背景オーバーレイ */}
+      <div className="bg-black/70 w-full h-full absolute z-20 inset-0"></div>
+
       {/* 背景画像 */}
       <motion.div
         initial={{ x: "100%" }}
@@ -35,14 +38,14 @@ function ConceptContent() {
       <motion.div
         initial={{ x: "-100%" }}
         animate={isVisible ? { x: 0 } : { x: "-100%" }}
-        transition={{ duration: 0.2, delay: 0.5, ease: "easeOut" }}
-        className="absolute inset-0 z-10 w-full h-full"
+        transition={{ duration: 0.2, delay: 0.3, ease: "easeOut" }}
+        className="absolute z-10 w-full h-full"
       >
         <Image
           src="/images/asanuma_only.png"
           alt="浅沼オンリー画像"
           fill
-          className="object-cover overflow-visible translate-x-[65%] sm:translate-x-[30%] md:translate-x-[20%] lg:translate-x-[0%]"
+          className="object-cover overflow-visible opacity-70 translate-x-[65%] sm:translate-x-[30%] md:translate-x-[20%] lg:translate-x-[0%]"
           sizes="100vw"
           priority
         />
@@ -50,35 +53,31 @@ function ConceptContent() {
       
       {/* コンテンツ */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6, delay: 1.0, ease: "easeOut" }}
-        className="absolute bottom-0 left-0 z-20 w-full"
+        initial={{ opacity: 0, y: "100%" }}
+        animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: "100%" }}
+        transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+        className="absolute px-8 py-8 bottom-10 h-[50%] w-[90%] z-30"
       >
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto">
           <div className="max-w-4xl">
-            <h2 className="text-3xl font-bold mb-8">
-              サッカーで「繋がる」「広がる」
-              <br />
-              そして日本一のサッカーカンパニーへ
+            <h2 className="text-xl font-bold mb-8">
+              サッカー人のポテンシャルを<br />最大限に解き放つ
             </h2>
-            <div className="space-y-6 text-lg text-gray-700">
+            <div className="space-y-6 text-white p-4 rounded-lg  text-sm ">
               <p>
-                私たちはこの目標を掲げ、スポーツ人材を中心として「サッカーイベントの企画・運営」、就活やセカンドキャリア、ライフプランなど様々な状況に合わせて人材育成を行う「営業」の事業を行っています。
-              </p>
-              <p>
-                株式会社Conext Marktingでは、スポーツ人材のその先へ向け、事業展開をしております。
+                サッカーを通じて培われた経験やスキルを、ビジネスの現場でも存分に活かし、
                 <br />
-                学業や仕事だけでなく、趣味や部活などの経験を活かし、仕事として楽しく両立することが出来る。
+                一人ひとりがその可能性を広げていける社会を目指しています。
                 <br />
-                そして会社・事業・人の全てが成長していき、社会に貢献する。
+                サッカー人材の“その先”を見据えた セカンドキャリアの創出
                 <br />
-                そんな会社を目指しています。
+                営業力や実務能力を磨き、 企業を支える人材への成長を支援
+                <br />
+                サッカーを通じて築いた<span className="font-bold text-base">人脈</span>や
+                <span className="font-bold text-base">ネットワーク</span>を、事業や仕事に活用します。
               </p>
               <p className="font-bold">
-                経験してきたからこそ分かる顧客ニーズや顧客心理、そこから生まれるアイディアやイベント。
-                <br />
-                それを実現出来るのが株式会社Conext Marktingです。
+                代表取締役 小田原 敬介
               </p>
             </div>
           </div>
@@ -90,7 +89,7 @@ function ConceptContent() {
 
 export default function ConceptSection() {
   return (
-    <AnimatedSection className="snap-section py-20 bg-white relative min-h-screen ">
+    <AnimatedSection className="py-20 bg-white relative h-screen w-full overflow-hidden">
       <ConceptContent />
     </AnimatedSection>
   );

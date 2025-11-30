@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import HeroSection from "@/components/sections/HeroSection";
 import ConceptSection from "@/components/sections/ConceptSection";
-import AboutSection from "@/components/sections/AboutSection";
+import KnowConextSection from "@/components/sections/KnowConextSection";
 import MasterSection from "@/components/sections/MasterSection";
 import BreakSection from "@/components/sections/BreakSection";
 import ShowtimeSection from "@/components/sections/ShowtimeSection";
@@ -14,7 +14,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <ConceptSection />
-      <AboutSection />
+      <KnowConextSection />
       <MasterSection />
       <BreakSection />
       <ShowtimeSection />

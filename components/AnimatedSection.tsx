@@ -28,7 +28,7 @@ export default function AnimatedSection({
   const Component = as;
 
   return (
-    <Component ref={ref as any} id={id} className={`snap-section ${className}`}>
+    <Component ref={ref as any} id={id} className={className}>
       <SectionAnimationProvider isVisible={isVisible}>
         <motion.div
           initial={{ opacity: 0 }}

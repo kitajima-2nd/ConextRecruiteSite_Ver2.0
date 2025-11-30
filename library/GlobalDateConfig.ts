@@ -137,3 +137,8 @@ export interface CompanyData {
       interval: 3000, // 3秒ごとに切り替え
     },
   };
+
+// クラス名を受け取るためのインターフェース
+export interface classNameProps {
+  className?: string;
+}
