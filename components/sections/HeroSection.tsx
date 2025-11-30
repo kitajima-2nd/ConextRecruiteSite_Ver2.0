@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import { useHeroAnimation } from "@/hooks/useHeroAnimation";
 import { companyData } from "@/library/GlobalDateConfig";
+import HeroBackgroundVideo from "./HeroBackgroundVideo";
 
 export default function HeroSection() {
   // カスタムフックを使用してフェードイン関連のロジックを取得
@@ -46,11 +47,13 @@ export default function HeroSection() {
     };
   }, [images.length, interval, isFirstImageVisible, slideImages.length]);
 
-  
   return (
-    <section className="relative h-screen flex items-start justify-start px-5 py-30 overflow-hidden bg-white">
+    <section className="relative h-screen flex items-start justify-start px-5 py-30 overflow-hidden">
+      {/* 背景動画 */}
+      <HeroBackgroundVideo />
+      
       {/* 左側コンテンツ */}
-      <div className={`z-20 text-left text-gray-800 px-4 transition-opacity duration-2000 delay-1000 ${opacityClass}`}>
+      <div className={`relative z-20 text-left text-gray-800 px-4 transition-opacity duration-2000 delay-1000 ${opacityClass}`}>
         <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
           Be a <span className="text-primary text-blue-900">Soccer</span> Company
         </h1>
@@ -66,7 +69,7 @@ export default function HeroSection() {
       </div>
 
       {/* 右側コンテンツ - 画面右下に配置 */}
-      <div className="absolute bottom-0 right-0 z-0">
+      <div className="absolute bottom-0 right-0 z-10">
         {/* 六角形要素 - 横1:縦0.86の比率、全体的に20%拡大、レスポンシブ対応 */}
         <div
           className={`

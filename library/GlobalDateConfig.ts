@@ -61,6 +61,14 @@ export interface CompanyData {
       }[];
       interval?: number; // スライド切り替え間隔（ミリ秒）
     };
+    
+    // ヒーローセクション用背景動画
+    heroBackgroundVideo?: {
+      pathPC: string; // PC用動画ファイルのパス（public/videos/に配置）
+      pathSP: string; // スマホ用動画ファイルのパス（public/videos/に配置）
+      poster?: string; // 動画のポスター画像（オプション）
+      playbackRate?: number; // 再生速度（デフォルト: 1.0、0.5 = 半分の速度、2.0 = 2倍速）
+    };
   }
   
   export const companyData: CompanyData = {
@@ -135,6 +143,14 @@ export interface CompanyData {
         },
       ],
       interval: 3000, // 3秒ごとに切り替え
+    },
+    
+    // ヒーローセクション用背景動画
+    heroBackgroundVideo: {
+      pathPC: "/videos/toppageVideo_forPC.mp4", // PC用動画ファイルのパス
+      pathSP: "/videos/toppageVideo_forSP.mp4", // スマホ用動画ファイルのパス
+      poster: "/images/hero-video-poster.jpg", // 動画のポスター画像（オプション）
+      playbackRate: 0.5, // 再生速度（1.0 = 通常速度、0.5 = スローモーション、2.0 = 2倍速）
     },
   };
 
