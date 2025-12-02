@@ -8,12 +8,6 @@ export default function AboutSection({ className = "" }: classNameProps) {
   return (
     <AnimatedSection className={`w-[100dvw] h-[100dvh] py-12 md:py-20 bg-gradient-to-b bg-white ${className}`}>
       <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Conextを知る
-            </h2>
-          </div>
-
           <div className="mb-16">
             <h3 className="text-3xl md:text-4xl font-bold mb-8">事業内容</h3>
             

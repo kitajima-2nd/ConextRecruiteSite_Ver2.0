@@ -12,7 +12,7 @@ interface HeroBackgroundVideoProps {
  * PC用とスマホ用の動画を自動で切り替え、再生速度を設定
  */
 export default function HeroBackgroundVideo({ 
-  overlayClassName = "bg-white/90" 
+  overlayClassName = "bg-white/50" 
 }: HeroBackgroundVideoProps) {
   const videoPCRef = useRef<HTMLVideoElement>(null);
   const videoSPRef = useRef<HTMLVideoElement>(null);

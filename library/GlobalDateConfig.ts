@@ -98,7 +98,7 @@ export interface CompanyData {
     businessDescription: "サッカーイベントの企画・運営、営業（人材育成）",
     
     logo: {
-      path: "/images/logo1_transparent.png",
+      path: "/images/logo_Image_main_skeleton.png",
       alt: "Conext Markting ロゴ",
     },
     
@@ -147,10 +147,10 @@ export interface CompanyData {
     
     // ヒーローセクション用背景動画
     heroBackgroundVideo: {
-      pathPC: "/videos/toppageVideo_forPC.mp4", // PC用動画ファイルのパス
-      pathSP: "/videos/toppageVideo_forSP.mp4", // スマホ用動画ファイルのパス
-      poster: "/images/hero-video-poster.jpg", // 動画のポスター画像（オプション）
-      playbackRate: 0.5, // 再生速度（1.0 = 通常速度、0.5 = スローモーション、2.0 = 2倍速）
+      pathPC: "/videos/toppageVideo2_forPC.mp4", // PC用動画ファイルのパス
+      pathSP: "/videos/toppageVideo2_forSP.mp4", // スマホ用動画ファイルのパス
+      poster: "/images/logo_Image.png", // 動画のポスター画像（オプション）
+      playbackRate: 0.7, // 再生速度（1.0 = 通常速度、0.5 = スローモーション、2.0 = 2倍速）
     },
   };
 

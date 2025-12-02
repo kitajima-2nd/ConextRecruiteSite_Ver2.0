@@ -58,4 +58,8 @@ section {
     scroll-snap-align: end;
     scroll-snap-stop: always;
   }
+  /* 見出し用のユーティリティクラス */
+  .font-heading {
+    font-family: var(--font-dm-serif-text), serif;
+  }
 }

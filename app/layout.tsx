@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import { Sawarabi_Gothic } from "next/font/google";
+import { DM_Serif_Text } from "next/font/google";
 import "./globals.css";
 
 const sawarabiGothic = Sawarabi_Gothic({
   variable: "--font-sawarabi-gothic",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const dm__Serif_Text = DM_Serif_Text({
+  variable: "--font-dm-serif-text",
   subsets: ["latin"],
   weight: "400",
 });
@@ -21,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={`${sawarabiGothic.variable} antialiased`}
+        className={`${sawarabiGothic.variable} ${dm__Serif_Text.variable} antialiased`}
       >
         {children}
       </body>

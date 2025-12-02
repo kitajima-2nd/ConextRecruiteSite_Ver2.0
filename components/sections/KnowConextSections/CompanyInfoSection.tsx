@@ -5,7 +5,7 @@ import { classNameProps } from "@/library/GlobalDateConfig";
 
 export default function CompanyInfoSection({ className = "" } : classNameProps) {
   return (
-    <section className={`w-[100dvw] h-[100dvh] py-12 md:py-20 bg-gradient-to-b from-gray-200 to-black text-white ${className}`}>
+    <section className={`w-dvw h-dvh py-12 md:py-20 bg-linear-to-b from-gray-200 to-black text-white ${className}`}>
       <div className="container mx-auto px-4">
           <div className="mb-16">
             <h3 className="text-3xl md:text-4xl font-bold mb-8">会社概要</h3>
