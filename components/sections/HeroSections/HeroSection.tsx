@@ -3,6 +3,7 @@
 import { useHeroAnimation } from "@/hooks/useHeroAnimation";
 import HeroBackgroundVideo from "./HeroBackgroundVideo";
 import HeroSlideshow from "./HeroSlideshow";
+import Image from "next/image";
 
 export default function HeroSection() {
   // カスタムフックを使用してフェードイン関連のロジックを取得
@@ -11,53 +12,58 @@ export default function HeroSection() {
   } = useHeroAnimation();
 
   return (
-    <section className="relative h-screen flex items-start justify-start px-5 py-30 overflow-hidden">
-      {/* 背景動画 */}
+    <section className="relative h-dvh w-full py-20">
+      {/* 1. 背景スライドショー - 最背面 */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <HeroSlideshow 
+          containerClassName="absolute inset-0 w-full h-full"
+        />
+      </div>
+      
+      {/* 2. 背景動画 */}
       <HeroBackgroundVideo />
       
-      {/* 左側コンテンツ */}
-      <div className={`relative z-20 text-left text-gray-800 px-4 transition-opacity duration-2000 delay-1000 ${opacityClass}`}>
-        <h1 className="font-heading text-5xl md:text-6xl lg:text-9xl mb-6 tracking-tight italic">
-          Be a 
-          <br />
-          <span className="text-primary text-blue-900">Soccer</span>
-          <br />
-          Company
-        </h1>
-        <div className="items-center justify-center space-between">
-          <p className="text-xl md:text-2xl mb-8 text-gray-700">
-            サッカーで「繋がる」「広がる」
-            <br />
-            そして日本一のサッカーカンパニーへ
-            <br />
-            一緒に目指しませんか？
-          </p>
+      {/* 3. 背景画像 */}
+      <div className="absolute inset-0 z-10 overflow-hidden">
+        <Image 
+          src="/images/bg_Image_skeleton.png"
+          alt="bg_Image_skeleton.png"
+          fill
+          className="object-cover opacity-80"
+          priority
+        />
+      </div>
+      {/* 背景画像のオーバーレイ */}
+      <div className="absolute inset-0 z-5 overflow-hidden bg-white/50"></div>
+
+      
+      {/* 4. コンテンツ - 最前面 */}
+        <div className={`relative z-30 w-full h-dvh ${opacityClass}`}>
+            <div className="absolute top-0 left-0 px-10">
+                <h1 className="font-heading text-5xl md:text-6xl lg:text-9xl mb-6 italic text-white">
+                    Be a 
+                    <br />
+                    <span className="text-primary text-blue-900">Soccer</span>
+                    <br />
+                    Company
+                </h1>
+            </div>
+            <div className="absolute bottom-35 right-0 px-10 ">
+                <h2 className="font-heading text-right text-3xl md:text-4xl lg:text-6xl text-white ">
+                    サッカーで
+                    <br />
+                    「繋がる」 「広がる」
+                    <br />
+                    <br />
+                    そして日本一のサッカーカンパニーへ
+                    <br />
+                    一緒に目指しませんか？
+                </h2>
+            </div>
         </div>
-      </div>
-
-      {/* 右側コンテンツ - 画面右下に配置 */}
-      <div className="absolute bottom-0 right-0 z-10">
-        <HeroSlideshow />
-      </div>
-
-      {/* ボタン - 画面下側中央に配置 */}
-      {/* <div className={`absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 flex flex-col sm:flex-row gap-4 justify-center items-center transition-opacity duration-1000 ${opacityClass}`}>
-        <a
-          href="#entry"
-          className="bg-white text-black px-8 py-4 rounded-md font-bold hover:bg-gray-200 transition-colors"
-        >
-          ENTRY
-        </a>
-        <a
-          href="#about"
-          className="border-2 border-white text-white px-8 py-4 rounded-md font-bold hover:bg-white/10 transition-colors"
-        >
-          詳しく見る
-        </a>
-      </div> */}
 
       {/* スクロールインジケーター */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 animate-bounce">
         <svg
           className="w-6 h-6 text-white"
           fill="none"

@@ -49,7 +49,7 @@ export default function HeroBackgroundVideo({
   };
 
   return (
-    <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 z-[5]">
       {/* PC用動画 */}
       <video
         ref={videoPCRef}
@@ -57,7 +57,7 @@ export default function HeroBackgroundVideo({
         loop
         muted
         playsInline
-        className="hidden md:block w-full h-full object-cover relative z-0"
+        className="hidden md:block w-full h-[200dvh] object-cover relative z-0 opacity-30"
         poster={videoConfig.poster}
         onLoadedMetadata={handlePlaybackRate}
         onCanPlay={handlePlaybackRate}
@@ -83,7 +83,7 @@ export default function HeroBackgroundVideo({
       </video>
       
       {/* オーバーレイ */}
-      <div className={`absolute inset-0 ${overlayClassName} z-10`} />
+      {/* <div className={`absolute inset-0 ${overlayClassName} z-10`} /> */}
     </div>
   );
 }

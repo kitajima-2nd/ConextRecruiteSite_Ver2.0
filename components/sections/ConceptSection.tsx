@@ -15,7 +15,7 @@ function ConceptContent() {
   return (
     <>
       {/* 背景オーバーレイ */}
-      <div className="bg-black/50 w-dvw h-dvh absolute z-20 inset-0"></div>
+      <div className="bg-black/50 w-dvw h-dvh absolute z-20 inset-0">
 
       {/* 背景画像 */}
       <motion.div
@@ -83,6 +83,7 @@ function ConceptContent() {
           </div>
         </div>
       </motion.div>
+      </div>
     </>
   );
 }
