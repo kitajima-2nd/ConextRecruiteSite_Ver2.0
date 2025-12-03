@@ -73,7 +73,7 @@ export default function HeroBackgroundVideo({
         loop
         muted
         playsInline
-        className="block md:hidden w-full h-full object-cover relative z-0"
+        className="block md:hidden w-full h-full object-cover relative z-0 opacity-30"
         poster={videoConfig.poster}
         onLoadedMetadata={handlePlaybackRate}
         onCanPlay={handlePlaybackRate}

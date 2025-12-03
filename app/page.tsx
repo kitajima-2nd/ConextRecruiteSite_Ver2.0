@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Header />
-      <HeroSection />
+      <HeroSection useTopBackgroundSlideshow={true} />
       <ConceptSection />
       <KnowConextSection />
       <MasterSection />

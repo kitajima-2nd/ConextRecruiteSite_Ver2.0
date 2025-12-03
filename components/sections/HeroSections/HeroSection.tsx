@@ -3,9 +3,16 @@
 import { useHeroAnimation } from "@/hooks/useHeroAnimation";
 import HeroBackgroundVideo from "./HeroBackgroundVideo";
 import HeroSlideshow from "./HeroSlideshow";
+import TopBackgroundSlideshow from "./TopBackgroundSlideshow";
 import Image from "next/image";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+  useTopBackgroundSlideshow?: boolean; // Top背景用スライドショーを使用するか
+}
+
+export default function HeroSection({ 
+  useTopBackgroundSlideshow = false 
+}: HeroSectionProps) {
   // カスタムフックを使用してフェードイン関連のロジックを取得
   const {
     opacityClass,
@@ -15,9 +22,16 @@ export default function HeroSection() {
     <section className="relative h-dvh w-full py-20">
       {/* 1. 背景スライドショー - 最背面 */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <HeroSlideshow 
-          containerClassName="absolute inset-0 w-full h-full"
-        />
+        {useTopBackgroundSlideshow ? (
+          <TopBackgroundSlideshow 
+            containerClassName="absolute inset-0 w-full h-full"
+            speed={5}
+          />
+        ) : (
+          <HeroSlideshow 
+            containerClassName="absolute inset-0 w-full h-full"
+          />
+        )}
       </div>
       
       {/* 2. 背景動画 */}
@@ -34,7 +48,7 @@ export default function HeroSection() {
         />
       </div>
       {/* 背景画像のオーバーレイ */}
-      <div className="absolute inset-0 z-5 overflow-hidden bg-white/50"></div>
+      {/* <div className="absolute inset-0 z-5 overflow-hidden bg-white/50"></div> */}
 
       
       {/* 4. コンテンツ - 最前面 */}
