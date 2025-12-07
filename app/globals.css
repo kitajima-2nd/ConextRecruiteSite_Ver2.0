@@ -62,6 +62,27 @@ section {
   .font-heading {
     font-family: var(--font-dm-serif-text), serif;
   }
+
+  /* 3Dパースペクティブ効果 */
+  /* .perspective-normal {
+    perspective: 1000px;
+    perspective-origin: center center;
+    transform-style: preserve-3d;
+  } */
+
+  /* 奥行きのある斜めに見える要素 */
+  .perspective-3d-tilt {
+    transform: rotateY(-40deg) translateZ(-400px);
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+
+  /* より強い斜め効果 */
+  /* .perspective-3d-tilt-strong {
+    transform: rotateY(-25deg) rotateX(8deg) translateZ(-150px);
+    transform-style: preserve-3d;
+    will-change: transform;
+  } */
 }
 
 /* フィルム風スライドショー用アニメーション */

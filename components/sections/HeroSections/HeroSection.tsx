@@ -19,47 +19,45 @@ export default function HeroSection({
   } = useHeroAnimation();
 
   return (
-    <section className="relative h-dvh w-full py-20">
-      {/* 1. 背景スライドショー - 最背面 */}
-      <div className="absolute inset-0 z-0 overflow-hidden">
-        {useTopBackgroundSlideshow ? (
-          <TopBackgroundSlideshow 
-            containerClassName="absolute inset-0 w-full h-full"
-            speed={5}
-          />
-        ) : (
-          <HeroSlideshow 
-            containerClassName="absolute inset-0 w-full h-full"
-          />
-        )}
+    <section className="relative h-dvh w-full py-20 perspective-normal">
+      {/* 3. Topページ要素 - 奥行きのある斜めに見える要素 */}
+      <div className="absolute inset-0 w-[90%] h-dvh z-10 overflow-hidden rounded-lg perspective-3d-tilt">
+        {/* 1. 背景スライドショー - 最背面 */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+            <TopBackgroundSlideshow 
+              containerClassName="absolute inset-0 w-full h-full opacity-50"
+              speed={5}
+            />
+        </div>
       </div>
-      
-      {/* 2. 背景動画 */}
-      <HeroBackgroundVideo />
-      
-      {/* 3. 背景画像 */}
-      <div className="absolute inset-0 z-10 overflow-hidden">
-        <Image 
-          src="/images/bg_Image_skeleton.png"
-          alt="bg_Image_skeleton.png"
+
+      {/* 2. 背景画像 */}
+      <div className="absolute inset-0 h-dvh bg-linear-to-b from-white to-black">
+        {/* <Image 
+          src="/images/TopPage_sqare_skeleton.png" 
+          alt="コネクトロゴ" 
           fill
-          className="object-cover opacity-80"
-          priority
-        />
+          className="object-contain opacity-30"
+        /> */}
       </div>
-      {/* 背景画像のオーバーレイ */}
-      {/* <div className="absolute inset-0 z-5 overflow-hidden bg-white/50"></div> */}
+
 
       
       {/* 4. コンテンツ - 最前面 */}
         <div className={`relative z-30 w-full h-dvh ${opacityClass}`}>
             <div className="absolute top-0 left-0 px-10">
                 <h1 className="font-heading text-5xl md:text-6xl lg:text-9xl mb-6 italic text-white">
-                    Be a 
+                    <span className="">
+                      Be a
+                    </span> 
                     <br />
-                    <span className="text-primary text-blue-900">Soccer</span>
+                    <span className="text-primary text-blue-900">
+                      Soccer
+                    </span>
                     <br />
-                    Company
+                    <span className="text-white">
+                      Company
+                    </span>
                 </h1>
             </div>
             <div className="absolute bottom-35 right-0 px-10 ">

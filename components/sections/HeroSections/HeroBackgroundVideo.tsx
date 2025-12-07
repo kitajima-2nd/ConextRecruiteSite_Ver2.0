@@ -49,7 +49,7 @@ export default function HeroBackgroundVideo({
   };
 
   return (
-    <div className="absolute inset-0 z-[5]">
+    <div className="absolute inset-0 z-5">
       {/* PC用動画 */}
       <video
         ref={videoPCRef}

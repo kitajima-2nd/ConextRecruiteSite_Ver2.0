@@ -17,19 +17,18 @@ export default function KnowConextSections() {
   const h2opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1.0], [0, 1, 1, 0]);
   
   return (
-    <section ref={targetref} className="relative h-[400dvh] w-[400dvw]">
+    <section ref={targetref} className="relative h-[400dvh] w-full">
       <motion.h2 
         className="fixed top-0 left-0 z-50 px-4 py-25 text-4xl md:text-5xl font-bold mb-4 text-black" 
         style={{ opacity: h2opacity }}
       >
         Conextを知る
       </motion.h2>
-      <motion.div className="sticky top-[10%] h-dvh flex  items-center overflow-hidden" style={{x}}>
-        <ConextfiveValueSection className=""/>
-        <AboutSection className=""/>
-        <VoiceSection className=""/>
-        <CompanyInfoSection className=""/>
-      </motion.div>
+
+        <ConextfiveValueSection className="w-dvh h-dvh"/>
+        <AboutSection className="w-dvh h-dvh"/>
+        <VoiceSection className="w-full h-dvh"/>
+        <CompanyInfoSection className="w-full h-dvh"/>
       
     </section>
   );

@@ -118,8 +118,8 @@ export interface CompanyData {
     heroSlideshow: {
       images: [
         {
-          path: "/images/logo_Image.png",
-          alt: "Conext Markting ロゴ",
+          path: "/images/callsenter_image.jpg",
+          alt: "営業風景",
         },
         {
           path: "/images/member_image.jpg",
