@@ -1,0 +1,318 @@
+/* サッカーボール（切頂二十面体）のサイズ */
+/* Stack Exchange参考: https://math.stackexchange.com/questions/3231265/how-do-i-calculate-the-coordinates-of-the-centers-of-the-faces-of-a-truncated-ic */
+/* Wikipedia参考: https://en.wikipedia.org/wiki/Truncated_icosahedron */
+/* 
+ * 切頂二十面体の数学的計算:
+ * - 正五角形と正六角形の辺の長さは等しい（a）
+ * - 正五角形の外接円半径: R5 = a / (2 * sin(π/5)) = a / (2 * sin(36°)) ≈ 0.8507a
+ * - 正六角形の外接円半径: R6 = a / (2 * sin(π/6)) = a / (2 * sin(30°)) = a
+ * - 切頂二十面体の外接球半径: R ≈ 0.8507a（辺の長さaに対する比）
+ * 
+ * 各面のサイズ比:
+ * - 正五角形/正六角形の外接円半径比 ≈ 0.8507/1.0
+ * - 正五角形のサイズは正六角形の約0.8507倍
+ */
+:root {
+  --soccer-ball-size: 250px;
+  /* 切頂二十面体の外接球半径（辺の長さaに対する比） */
+  /* Wikipediaより: R ≈ 0.8507a */
+  --circumradius: 0.8507;
+  /* 正五角形のスケール（数学的に正確なサイズ） */
+  /* 外接円半径比を考慮: 正五角形 ≈ 0.8507a, 正六角形 = a */
+  /* サイズ比: 正五角形/正六角形 ≈ 0.8507/1.0 */
+  /* 各面が接するように、適切なスケールを設定 */
+  --pentagon-scale: 0.35;
+  /* 正六角形のスケール（数学的に正確なサイズ） */
+  /* 正六角形の外接円半径 = a */
+  --hexagon-scale: 0.41;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.view {
+  transform-style: preserve-3d;
+}
+
+.viewInner {
+  transform-style: preserve-3d;
+}
+
+.solid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--soccer-ball-size);
+  height: var(--soccer-ball-size);
+  margin-left: calc(var(--soccer-ball-size) / -2);
+  margin-top: calc(var(--soccer-ball-size) / -2);
+  transform-style: preserve-3d;
+  transform-origin: 50% 50% 0;
+  backface-visibility: visible;
+}
+
+.face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  /* 各面のサイズを調整して重複を防ぐ */
+}
+
+.face::before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: attr(data-num);
+  margin-top: -15px;
+  margin-left: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 30px;
+  font-size: 12px;
+  z-index: 1;
+}
+
+/* 正五角形のスタイル */
+/* 切頂二十面体では、正五角形と正六角形の辺の長さは等しい */
+/* 正五角形の外接円半径: R5 = a / (2 * sin(π/5)) ≈ a * 0.8507 */
+/* 正六角形の外接円半径: R6 = a / (2 * sin(π/6)) = a */
+/* サイズ比: 正五角形は正六角形の約0.8507倍 */
+/* 各面のサイズは個別のtransformで調整するため、ここではscaleを設定しない */
+.facePentagon {
+  clip-path: polygon(
+    50% 0%,
+    100% 38.2%,
+    81.8% 100%,
+    18.2% 100%,
+    0% 38.2%
+  );
+  transform-origin: 50% 50% 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+}
+
+.facePentagon::before {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.9);
+}
+
+/* 正六角形のスタイル */
+/* 切頂二十面体では、正五角形と正六角形の辺の長さは等しい */
+/* 正六角形の外接円半径: R6 = a / (2 * sin(π/6)) = a */
+/* 各面のサイズは個別のtransformで調整するため、ここではscaleを設定しない */
+.faceHexagon {
+  clip-path: polygon(
+    25% 0%,
+    75% 0%,
+    100% 50%,
+    75% 100%,
+    25% 100%,
+    0% 50%
+  );
+  transform-origin: 50% 50% 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 0, 0, 0.8);
+}
+
+.faceHexagon::before {
+  background-color: rgba(0, 0, 0, 0.9);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+}
+
+/* 切頂二十面体（サッカーボール型）の配置 */
+/* Wikipedia (https://en.wikipedia.org/wiki/Truncated_icosahedron) を参考にした数学的に正確な配置 */
+/* 
+ * 切頂二十面体の構造:
+ * - 正五角形12個: 正二十面体の各頂点を1/3の位置で切り落とした結果
+ * - 正六角形20個: 正二十面体の各面（正三角形）が正六角形に変換された結果
+ * - 各頂点: 1つの正五角形と2つの正六角形が接する
+ * - 二面角: 六角形-六角形間 ≈ 138.18°, 五角形-六角形間 ≈ 142.6°
+ * - 辺の長さ: 正五角形と正六角形の辺の長さは等しい（a）
+ * 
+ * 位置調整方法:
+ * - rotateY(角度): 左右の位置（0-360度）
+ * - rotateX(角度): 上下の位置（-90～90度、-90=上、90=下）
+ * - translateZ(距離): 中心からの距離（切頂二十面体の外接球半径）
+ * - scale(倍率): 各面のサイズ（重複を防ぐため）
+ * - rotateZ(角度): 面自体の回転（オプション）
+ * 
+ * 外接球半径の計算:
+ * - 正二十面体の頂点座標: (0, ±1, ±φ), (±1, ±φ, 0), (±φ, 0, ±1)
+ * - φ = (1 + √5) / 2 ≈ 1.618 (黄金比)
+ * - 切頂二十面体の外接球半径 ≈ 0.8507 * 一辺の長さ
+ */
+
+/* 正五角形の配置（12個） */
+/* 正二十面体の12個の頂点位置に対応 */
+/* 正二十面体の頂点座標: (0, ±1, ±φ), (±1, ±φ, 0), (±φ, 0, ±1) */
+/* φ = (1 + √5) / 2 ≈ 1.618 */
+
+.pentagon1 {
+  /* Stack Exchange参考: 正二十面体の頂点 (0, 1, φ) に対応する正五角形 */
+  /* 双対多面体（pentakis dodecahedron）の頂点座標を基に配置 */
+  /* 正規化後の座標: (0, 1/√(1+φ²), φ/√(1+φ²)) ≈ (0, 0.5257, 0.8507) */
+  transform: rotateY(0deg) rotateX(-31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon2 {
+  /* 頂点: (0, 1, -φ) */
+  transform: rotateY(72deg) rotateX(-31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon3 {
+  /* 頂点: (0, -1, φ) */
+  transform: rotateY(144deg) rotateX(-31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon4 {
+  /* 頂点: (0, -1, -φ) */
+  transform: rotateY(216deg) rotateX(-31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon5 {
+  /* 頂点: (0, 1, φ) の別の配置 */
+  transform: rotateY(288deg) rotateX(-31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon6 {
+  /* 頂点: (1, φ, 0) */
+  transform: rotateY(36deg) rotateX(148.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon7 {
+  /* 頂点: (1, -φ, 0) */
+  transform: rotateY(108deg) rotateX(148.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon8 {
+  /* 頂点: (-1, φ, 0) */
+  transform: rotateY(180deg) rotateX(148.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon9 {
+  /* 頂点: (-1, -φ, 0) */
+  transform: rotateY(252deg) rotateX(148.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon10 {
+  /* 頂点: (1, φ, 0) の別の配置 */
+  transform: rotateY(324deg) rotateX(148.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--pentagon-scale));
+}
+
+.pentagon11 {
+  /* 頂点: (φ, 0, 1) */
+  transform: rotateY(0deg) rotateX(31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--pentagon-scale));
+}
+
+.pentagon12 {
+  /* 頂点: (-φ, 0, 1) */
+  transform: rotateY(180deg) rotateX(31.717deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--pentagon-scale));
+}
+
+/* 正六角形の配置（20個） */
+/* 正二十面体の20個の面の中心位置に対応 */
+/* 正二十面体の各面は正三角形で、その中心座標を計算して配置 */
+
+/* 上面の5つの正六角形（正二十面体の上面の5つの面） */
+/* Stack Exchange参考: 各面の中心は頂点の平均で計算される */
+/* 正二十面体の各面（正三角形）の中心座標を基に配置 */
+.hexagon1 {
+  /* 面の中心: 上面の正三角形の中心（3頂点の平均） */
+  /* 正六角形のサイズ: 切頂二十面体では正五角形と正六角形の辺の長さは等しい */
+  transform: rotateY(0deg) rotateX(-58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon2 {
+  transform: rotateY(72deg) rotateX(-58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon3 {
+  transform: rotateY(144deg) rotateX(-58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon4 {
+  transform: rotateY(216deg) rotateX(-58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon5 {
+  transform: rotateY(288deg) rotateX(-58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+/* 中間層の10つの正六角形（正二十面体の中間層の10つの面） */
+.hexagon6 {
+  /* 面の中心: 中間層の正三角形の中心（3頂点の平均） */
+  transform: rotateY(36deg) rotateX(-5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon7 {
+  transform: rotateY(108deg) rotateX(-5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon8 {
+  transform: rotateY(180deg) rotateX(-5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon9 {
+  transform: rotateY(252deg) rotateX(-5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon10 {
+  transform: rotateY(324deg) rotateX(-5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon11 {
+  transform: rotateY(36deg) rotateX(5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon12 {
+  transform: rotateY(108deg) rotateX(5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon13 {
+  transform: rotateY(180deg) rotateX(5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon14 {
+  transform: rotateY(252deg) rotateX(5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+.hexagon15 {
+  transform: rotateY(324deg) rotateX(5.172deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) scale(var(--hexagon-scale));
+}
+
+/* 下面の5つの正六角形（正二十面体の下面の5つの面） */
+.hexagon16 {
+  /* 面の中心: 下面の正三角形の中心（3頂点の平均） */
+  transform: rotateY(0deg) rotateX(58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--hexagon-scale));
+}
+
+.hexagon17 {
+  transform: rotateY(72deg) rotateX(58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--hexagon-scale));
+}
+
+.hexagon18 {
+  transform: rotateY(144deg) rotateX(58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--hexagon-scale));
+}
+
+.hexagon19 {
+  transform: rotateY(216deg) rotateX(58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--hexagon-scale));
+}
+
+.hexagon20 {
+  transform: rotateY(288deg) rotateX(58.283deg) translateZ(calc(var(--soccer-ball-size) * var(--circumradius))) rotateZ(180deg) scale(var(--hexagon-scale));
+}
+

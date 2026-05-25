@@ -25,20 +25,20 @@ export default function HeroSection({
         {/* 1. 背景スライドショー - 最背面 */}
         <div className="absolute inset-0 z-0 overflow-hidden">
             <TopBackgroundSlideshow 
-              containerClassName="absolute inset-0 w-full h-full opacity-50"
+              containerClassName="absolute inset-0 w-full h-full opacity-25"
               speed={5}
             />
         </div>
       </div>
 
-      {/* 2. 背景画像 */}
-      <div className="absolute inset-0 h-dvh bg-linear-to-b from-white to-black">
-        {/* <Image 
-          src="/images/TopPage_sqare_skeleton.png" 
-          alt="コネクトロゴ" 
+      {/* 2. 背景画像（3D背景が透けるよう透明度を下げる） */}
+      <div className="absolute inset-0 h-dvh w-full bg-linear-to-b from-black/40 to-black/80">
+        <Image 
+          src="/images/bg_Image_skeleton.png" 
+          alt="Top背景画像" 
           fill
-          className="object-contain opacity-30"
-        /> */}
+          className="object-cover opacity-35"
+        />
       </div>
 
 

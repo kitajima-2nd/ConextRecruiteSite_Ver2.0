@@ -15,7 +15,7 @@ function ConceptContent() {
   return (
     <>
       {/* 背景オーバーレイ */}
-      <div className="bg-black/50 w-dvw h-dvh absolute z-20 inset-0">
+      <div className="absolute inset-0 z-20 h-dvh w-dvw bg-gradient-to-r from-black/75 via-black/45 to-black/15">
 
       {/* 背景画像 */}
       <motion.div
@@ -90,7 +90,7 @@ function ConceptContent() {
 
 export default function ConceptSection() {
   return (
-    <AnimatedSection className="py-20 bg-white relative h-screen w-full overflow-hidden">
+    <AnimatedSection className="relative h-dvh w-full overflow-hidden bg-transparent py-0">
       <ConceptContent />
     </AnimatedSection>
   );

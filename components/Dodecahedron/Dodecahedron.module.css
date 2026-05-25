@@ -1,0 +1,156 @@
+/* 正12面体のサイズ */
+:root {
+  --dodecahedron-size: 200px;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1000px;
+}
+
+.view {
+  transform-style: preserve-3d;
+  transition: all 0.2s linear 0s;
+  animation: rotation 10s linear 0s infinite;
+}
+
+.view:hover {
+  animation-play-state: paused;
+}
+
+.viewInner {
+  transform-style: preserve-3d;
+  transition: all 0.2s linear 0s;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.solid {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--dodecahedron-size);
+  height: var(--dodecahedron-size);
+  margin-left: calc(var(--dodecahedron-size) / -2);
+  margin-top: calc(var(--dodecahedron-size) / -2);
+  transform-style: preserve-3d;
+  transform-origin: 50% 50% 0;
+  backface-visibility: visible;
+}
+
+.face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.75);
+  transform-style: preserve-3d;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+.face::before {
+  position: absolute;
+  left: 50%;
+  content: attr(data-num);
+  margin-top: -15px;
+  margin-left: -15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+}
+
+/* 正五角形のクリップパス */
+.facePentagon {
+  clip-path: polygon(
+    50% 0%,
+    100% 38.2%,
+    81.8% 100%,
+    18.2% 100%,
+    0% 38.2%
+  );
+  transform-origin: 50% 50% 0;
+}
+
+.facePentagon::before {
+  top: 50%;
+}
+
+/* 正12面体の各面の配置 */
+/* 計算値: 内接球半径 ≈ 1.1135 * 一辺の長さ */
+/* 二面角 ≈ 116.565度 */
+/* マジックアングル ≈ 31.717度 */
+
+/* 正12面体の配置: 各面を内接球半径分前に押し出す */
+/* 上面の5つの面（上側のリング） */
+.face1 {
+  transform: rotateY(0deg) rotateX(-31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face2 {
+  transform: rotateY(72deg) rotateX(-31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face3 {
+  transform: rotateY(144deg) rotateX(-31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face4 {
+  transform: rotateY(216deg) rotateX(-31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face5 {
+  transform: rotateY(288deg) rotateX(-31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+/* 中間層の5つの面（横側のリング） */
+.face6 {
+  transform: rotateY(36deg) rotateX(148.283deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face7 {
+  transform: rotateY(108deg) rotateX(148.283deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face8 {
+  transform: rotateY(180deg) rotateX(148.283deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face9 {
+  transform: rotateY(252deg) rotateX(148.283deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+.face10 {
+  transform: rotateY(324deg) rotateX(148.283deg) translateZ(calc(var(--dodecahedron-size) * 1.1135));
+}
+
+/* 下面の2つの面 */
+/* 正12面体の構造: 上面5つ、中間層5つ、下面2つ */
+/* 11番目: 上面の1番目（0度）の下側に対応 */
+.face11 {
+  transform: rotateY(0deg) rotateX(31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135)) rotateZ(180deg);
+  backface-visibility: visible;
+}
+
+/* 12番目: 上面の4番目（216度）の下側に対応 */
+.face12 {
+  transform: rotateY(216deg) rotateX(31.717deg) translateZ(calc(var(--dodecahedron-size) * 1.1135)) rotateZ(180deg);
+  backface-visibility: visible;
+}
+

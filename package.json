@@ -10,6 +10,7 @@
     "clean": "node -e \"const fs=require('fs');const path=require('path');function rmdir(p){if(fs.existsSync(p)){fs.readdirSync(p).forEach(f=>{const fp=path.join(p,f);if(fs.lstatSync(fp).isDirectory())rmdir(fp);else fs.unlinkSync(fp);});fs.rmdirSync(p);}};['.next','node_modules/.cache','.turbo'].forEach(d=>rmdir(d));\""
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.4.0",
     "motion": "^12.23.24",
     "next": "16.0.7",
