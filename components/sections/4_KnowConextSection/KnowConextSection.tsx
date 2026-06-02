@@ -1,9 +1,9 @@
 "use client";
 
-import AboutSection from "@/components/sections/KnowConextSections/AboutSection";
-import VoiceSection from "@/components/sections/KnowConextSections/VoiceSection";
-import CompanyInfoSection from "@/components/sections/KnowConextSections/CompanyInfoSection";
-import ConextfiveValueSection from "@/components/sections/KnowConextSections/ConextfiveValueSection";
+import AboutSection from "@/components/sections/4_KnowConextSection/AboutSection";
+import VoiceSection from "@/components/sections/4_KnowConextSection/VoiceSection";
+import CompanyInfoSection from "@/components/sections/4_KnowConextSection/CompanyInfoSection";
+import ConextfiveValueSection from "@/components/sections/4_KnowConextSection/ConextfiveValueSection";
 import { motion, useTransform, useScroll } from "motion/react";
 import { useRef } from "react";
 
@@ -13,7 +13,6 @@ export default function KnowConextSections() {
     target: targetref,
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
   const h2opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1.0], [0, 1, 1, 0]);
   
   return (

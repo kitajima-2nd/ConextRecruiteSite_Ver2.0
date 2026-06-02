@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
-import { fadeInTransition } from "@/animations/heroAnimations";
 
 /**
  * ヒーローセクション用のアニメーションフック
- * 
- * このフックは以下の機能を提供します：
- * - コンポーネントのロード状態管理
- * - フェードイン用のクラス名生成
- * 
- * @returns アニメーション関連の状態と設定
+ * コンポーネントのロード状態管理とフェードイン用クラス名を提供
  */
 export function useHeroAnimation() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,8 +13,6 @@ export function useHeroAnimation() {
 
   return {
     isLoaded,
-    fadeInTransition,
     opacityClass: isLoaded ? " opacity-100" : " opacity-0",
   };
 }
-

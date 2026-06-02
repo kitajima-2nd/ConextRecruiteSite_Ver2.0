@@ -1,6 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import TruncatedIcosahedronModel from "./TruncatedIcosahedronModel";
 import type { TruncatedIcosahedronScrollState } from "@/hooks/useTruncatedIcosahedronScroll";
 import { smoothstep } from "@/hooks/useTruncatedIcosahedronScroll";
@@ -36,6 +37,14 @@ export default function TruncatedIcosahedronCanvas({
         style={{ background: "transparent" }}
       >
         <TruncatedIcosahedronModel scrollState={scrollState} />
+        <EffectComposer>
+          <Bloom
+            intensity={2.0}
+            luminanceThreshold={3.0}
+            luminanceSmoothing={0.3}
+            mipmapBlur
+          />
+        </EffectComposer>
       </Canvas>
     </div>
   );

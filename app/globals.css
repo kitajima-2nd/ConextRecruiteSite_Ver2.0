@@ -84,22 +84,3 @@ section {
     will-change: transform;
   } */
 }
-
-/* フィルム風スライドショー用アニメーション */
-@keyframes slideLeftToRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-33.333%);
-  }
-}
-
-@keyframes slideRightToLeft {
-  0% {
-    transform: translateX(-33.333%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}

@@ -52,10 +52,11 @@ export default function TruncatedIcosahedronModel({
     <group ref={groupRef}>
       <lineSegments geometry={lineGeometry}>
         <lineBasicMaterial
-          color="#7dd3fc"
+          color="#8fd3ff"
           transparent
-          opacity={0.85}
+          opacity={1}
           linewidth={1}
+          toneMapped={false}
         />
       </lineSegments>
     </group>

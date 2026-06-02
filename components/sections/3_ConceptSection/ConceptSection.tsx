@@ -18,7 +18,7 @@ function ConceptContent() {
       <div className="absolute inset-0 z-20 h-dvh w-dvw bg-gradient-to-r from-black/75 via-black/45 to-black/15">
 
       {/* 背景画像 */}
-      <motion.div
+      {/* <motion.div
         initial={{ x: "100%" }}
         animate={isVisible ? { x: 0 } : { x: "100%" }}
         transition={{ duration: 0.2, ease: "easeOut" }}
@@ -32,10 +32,10 @@ function ConceptContent() {
           sizes="100vw"
           priority
         />
-      </motion.div>
+      </motion.div> */}
       
       {/* 浅沼オンリー画像 */}
-      <motion.div
+      {/* <motion.div
         initial={{ x: "-100%" }}
         animate={isVisible ? { x: 0 } : { x: "-100%" }}
         transition={{ duration: 0.2, delay: 0.3, ease: "easeOut" }}
@@ -49,7 +49,7 @@ function ConceptContent() {
           sizes="100vw"
           priority
         />
-      </motion.div>
+      </motion.div> */}
       
       {/* コンテンツ */}
       <motion.div

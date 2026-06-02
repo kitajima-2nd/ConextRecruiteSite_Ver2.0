@@ -53,21 +53,12 @@ export interface CompanyData {
       phone?: string;
     };
     
-    // ヒーローセクション用スライドショー画像
+    // ヒーローセクション用スライドショー画像（TopBackgroundSlideshow）
     heroSlideshow?: {
       images: {
         path: string;
         alt: string;
       }[];
-      interval?: number; // スライド切り替え間隔（ミリ秒）
-    };
-    
-    // ヒーローセクション用背景動画
-    heroBackgroundVideo?: {
-      pathPC: string; // PC用動画ファイルのパス（public/videos/に配置）
-      pathSP: string; // スマホ用動画ファイルのパス（public/videos/に配置）
-      poster?: string; // 動画のポスター画像（オプション）
-      playbackRate?: number; // 再生速度（デフォルト: 1.0、0.5 = 半分の速度、2.0 = 2倍速）
     };
   }
   
@@ -142,15 +133,6 @@ export interface CompanyData {
           alt: "大会風景",
         },
       ],
-      interval: 3000, // 3秒ごとに切り替え
-    },
-    
-    // ヒーローセクション用背景動画
-    heroBackgroundVideo: {
-      pathPC: "/videos/toppageVideo2_forPC.mp4", // PC用動画ファイルのパス
-      pathSP: "/videos/toppageVideo2_forSP.mp4", // スマホ用動画ファイルのパス
-      poster: "/images/logo_Image.png", // 動画のポスター画像（オプション）
-      playbackRate: 0.7, // 再生速度（1.0 = 通常速度、0.5 = スローモーション、2.0 = 2倍速）
     },
   };
 

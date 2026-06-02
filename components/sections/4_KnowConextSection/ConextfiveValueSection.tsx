@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { motion, useTransform, useScroll } from "motion/react";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import AnimatedSection from "@/components/AnimatedSection";
 
