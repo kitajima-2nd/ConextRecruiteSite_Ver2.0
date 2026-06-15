@@ -1,75 +1,60 @@
 "use client";
 
-import AnimatedSection from "@/components/AnimatedSection";
+import SectionShell from "@/components/layout/SectionShell";
+import SectionHeading from "@/components/layout/SectionHeading";
+import FeatureCard from "@/components/layout/FeatureCard";
+
+const breakItems = [
+  {
+    id: "member",
+    badge: "M",
+    title: (
+      <>
+        型破りな
+        <br />
+        社員たち
+      </>
+    ),
+    description:
+      "個性と強みを活かし、常識にとらわれない発想で新しい価値を生み出すメンバーが活躍しています。",
+    href: "#member-detail",
+  },
+  {
+    id: "special",
+    badge: "S",
+    title: (
+      <>
+        SHOWTIME
+        <br />
+        SHOW
+      </>
+    ),
+    description:
+      "社内イベントや特別企画を通じて、チームの一体感と創造性を高めています。",
+    href: "#special-detail",
+    linkLabel: "特設ページで投票する",
+  },
+];
 
 export default function BreakSection() {
   return (
-    <AnimatedSection className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Conext Marktingで<span className="text-gray-400">破る</span>
-          </h2>
-          <p className="text-xl text-gray-600">
-            さあ、ここからぶっ飛んでみようぜ。
-          </p>
-        </div>
+    <SectionShell variant="light">
+      <SectionHeading
+        eyebrow="Break"
+        title={
+          <>
+            Conext Marktingで<span className="text-neutral-400">破る</span>
+          </>
+        }
+        description="さあ、ここからぶっ飛んでみようぜ。"
+        className="mb-14"
+      />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* 型破りな社員たち */}
-          <div id="member" className="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition-shadow">
-            <div className="mb-6">
-              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
-                M
-              </div>
-              <h3 className="text-2xl font-bold mb-4">
-                ここにtestをいれます
-                <br />
-                ここにtestをいれます
-              </h3>
-            </div>
-            <p className="text-gray-600 mb-6">
-              ここにtestをいれます
-            </p>
-            <a
-              href="#member-detail"
-              className="text-black font-bold hover:underline inline-flex items-center"
-            >
-              詳しく見る
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-
-          {/* SHOWTIME SHOW */}
-          <div id="special" className="bg-gray-50 rounded-lg p-8 hover:shadow-lg transition-shadow">
-            <div className="mb-6">
-              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center text-white text-2xl font-bold mb-4">
-                S
-              </div>
-              <h3 className="text-2xl font-bold mb-4">
-                ここにtestをいれます
-                <br />
-                ここにtestをいれます
-              </h3>
-            </div>
-            <p className="text-gray-600 mb-6">
-              ここにtestをいれます
-            </p>
-            <a
-              href="#special-detail"
-              className="text-black font-bold hover:underline inline-flex items-center"
-            >
-              特設ページで投票する
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        </div>
+      <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-2">
+        {breakItems.map((item) => (
+          <FeatureCard key={item.id} {...item} />
+        ))}
       </div>
-    </AnimatedSection>
+    </SectionShell>
   );
 }
-

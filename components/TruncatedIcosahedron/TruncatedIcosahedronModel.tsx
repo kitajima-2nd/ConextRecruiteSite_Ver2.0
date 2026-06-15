@@ -1,6 +1,7 @@
 "use client";
 
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
+import { Segments, Segment } from "@react-three/drei";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 import { getTruncatedIcosahedronData } from "@/lib/geometry/truncatedIcosahedron";
@@ -8,6 +9,9 @@ import {
   getTruncatedIcosahedronTransform,
   type TruncatedIcosahedronScrollState,
 } from "@/hooks/useTruncatedIcosahedronScroll";
+
+/** 線の太さ（ピクセル単位。drei Segments / Line2 用） */
+const LINE_WIDTH = 3;
 
 type TruncatedIcosahedronModelProps = {
   scrollState: TruncatedIcosahedronScrollState;
@@ -17,17 +21,13 @@ export default function TruncatedIcosahedronModel({
   scrollState,
 }: TruncatedIcosahedronModelProps) {
   const groupRef = useRef<THREE.Group>(null);
+  const { size } = useThree();
+  const resolution = useMemo(
+    () => new THREE.Vector2(size.width, size.height),
+    [size.width, size.height]
+  );
 
-  const { linePositions } = useMemo(() => getTruncatedIcosahedronData(), []);
-
-  const lineGeometry = useMemo(() => {
-    const geometry = new THREE.BufferGeometry();
-    geometry.setAttribute(
-      "position",
-      new THREE.BufferAttribute(linePositions, 3)
-    );
-    return geometry;
-  }, [linePositions]);
+  const { vertices, edges } = useMemo(() => getTruncatedIcosahedronData(), []);
 
   useFrame((state, delta) => {
     const group = groupRef.current;
@@ -50,15 +50,21 @@ export default function TruncatedIcosahedronModel({
 
   return (
     <group ref={groupRef}>
-      <lineSegments geometry={lineGeometry}>
-        <lineBasicMaterial
-          color="#8fd3ff"
-          transparent
-          opacity={1}
-          linewidth={1}
-          toneMapped={false}
-        />
-      </lineSegments>
+      <Segments
+        lineWidth={LINE_WIDTH}
+        resolution={resolution}
+        transparent
+        opacity={1}
+      >
+        {edges.map(([a, b], index) => (
+          <Segment
+            key={index}
+            start={vertices[a]}
+            end={vertices[b]}
+            color="#8fd3ff"
+          />
+        ))}
+      </Segments>
     </group>
   );
 }

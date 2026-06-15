@@ -3,13 +3,13 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 
 export type TruncatedIcosahedronScrollState = {
-  /** 0: Hero, 1: Hero2, 2: Concept */
+  /** 0: Hero, 1: Hero2, 2: Hero3 */
   stageIndex: number;
   /** 現在セクション内の進捗 0〜1 */
   stageProgress: number;
   /** 3セクション全体の進捗 0〜1 */
   globalProgress: number;
-  /** 3D背景を表示するか（Concept通過後は非表示） */
+  /** 3D背景を表示するか（Hero3通過後は非表示） */
   visible: boolean;
 };
 

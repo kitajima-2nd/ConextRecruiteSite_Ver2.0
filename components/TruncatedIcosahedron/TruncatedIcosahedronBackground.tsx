@@ -23,7 +23,7 @@ export default function TruncatedIcosahedronBackground({
       aria-hidden
     >
       <TruncatedIcosahedronCanvas scrollState={scrollState} />
-      <div className="absolute inset-0 " /> {/* bg-linear-to-l from-blue-500 via-sky-400/90 to-white/75 */}
+      <div className="absolute inset-0 bg-gradient-to-l from-cyan-500/35 via-sky-200/15 to-white/60" />
     </div>
   );
 }

@@ -8,28 +8,32 @@ import { motion, useTransform, useScroll } from "motion/react";
 import { useRef } from "react";
 
 export default function KnowConextSections() {
-  const targetref = useRef < HTMLDivElement | null>(null);
-  const {scrollYProgress} = useScroll({
-    target: targetref,
+  const targetRef = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"],
   });
 
-  const h2opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1.0], [0, 1, 1, 0]);
-  
-  return (
-    <section ref={targetref} className="relative h-[400dvh] w-full">
-      <motion.h2 
-        className="fixed top-0 left-0 z-50 px-4 py-25 text-4xl md:text-5xl font-bold mb-4 text-black" 
-        style={{ opacity: h2opacity }}
-      >
-        Conextを知る
-      </motion.h2>
+  const headingOpacity = useTransform(scrollYProgress, [0, 0.08, 0.92, 1], [0, 1, 1, 0]);
 
-        <ConextfiveValueSection className="w-dvh h-dvh"/>
-        <AboutSection className="w-dvh h-dvh"/>
-        <VoiceSection className="w-full h-dvh"/>
-        <CompanyInfoSection className="w-full h-dvh"/>
-      
+  return (
+    <section ref={targetRef} id="about" className="relative w-full bg-white">
+      <motion.div
+        className="pointer-events-none fixed left-0 top-[var(--header-height)] z-40 px-6 md:px-10"
+        style={{ opacity: headingOpacity }}
+      >
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-600">
+          Know Conext
+        </p>
+        <h2 className="font-heading text-3xl text-neutral-900 md:text-4xl">Conextを知る</h2>
+      </motion.div>
+
+      <div className="relative">
+        <ConextfiveValueSection />
+        <AboutSection />
+        <VoiceSection />
+        <CompanyInfoSection />
+      </div>
     </section>
   );
 }
-
