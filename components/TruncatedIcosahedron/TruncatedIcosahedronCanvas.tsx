@@ -1,7 +1,6 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import TruncatedIcosahedronModel from "./TruncatedIcosahedronModel";
 import type { TruncatedIcosahedronScrollState } from "@/hooks/useTruncatedIcosahedronScroll";
 import { smoothstep } from "@/hooks/useTruncatedIcosahedronScroll";
@@ -14,15 +13,17 @@ export default function TruncatedIcosahedronCanvas({
   scrollState,
 }: TruncatedIcosahedronCanvasProps) {
   const clipProgress = smoothstep(0.55, 0.72, scrollState.globalProgress);
-  const clipLeft = `${(1 - clipProgress) * 40}%`;
+  const clipLeftPct = (1 - clipProgress) * 40;
+  // ほぼ 0% の clip-path を残すと WebGL 合成で黒点が出ることがあるため、意味のあるときだけ適用
+  const clipApplied = clipProgress > 0.01 && clipLeftPct > 0.5;
+  const clipLeft = `${clipLeftPct}%`;
 
   return (
     <div
       className="h-full w-full"
       style={{
-        clipPath: clipProgress > 0.01 ? `inset(0 0 0 ${clipLeft})` : undefined,
-        WebkitClipPath:
-          clipProgress > 0.01 ? `inset(0 0 0 ${clipLeft})` : undefined,
+        clipPath: clipApplied ? `inset(0 0 0 ${clipLeft})` : undefined,
+        WebkitClipPath: clipApplied ? `inset(0 0 0 ${clipLeft})` : undefined,
         transition: "clip-path 0.05s linear",
       }}
     >
@@ -32,19 +33,16 @@ export default function TruncatedIcosahedronCanvas({
         gl={{
           alpha: true,
           antialias: true,
+          premultipliedAlpha: false,
           powerPreference: "high-performance",
         }}
         style={{ background: "transparent" }}
+        onCreated={({ gl }) => {
+          // (0,0,0,0) クリアは透明合成で黒点になることがあるため、RGB は白のまま alpha 0
+          gl.setClearColor(0xffffff, 0);
+        }}
       >
         <TruncatedIcosahedronModel scrollState={scrollState} />
-        <EffectComposer>
-          <Bloom
-            intensity={2.0}
-            luminanceThreshold={3.0}
-            luminanceSmoothing={0.3}
-            mipmapBlur
-          />
-        </EffectComposer>
       </Canvas>
     </div>
   );
