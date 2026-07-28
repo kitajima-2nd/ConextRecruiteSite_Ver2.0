@@ -34,18 +34,21 @@ export default function TruncatedIcosahedronModel({
     if (!group) return;
 
     const time = state.clock.elapsedTime;
-    const { scale, positionX, positionY } = getTruncatedIcosahedronTransform(
+    const { scale, positionX, positionY, locked } = getTruncatedIcosahedronTransform(
       scrollState.globalProgress,
       scrollState.stageProgress,
-      time
+      time,
+      scrollState.stageIndex
     );
 
     group.scale.setScalar(scale);
     group.position.set(positionX, positionY, 0);
 
-    group.rotation.x += (0.28 + Math.sin(time * 0.7) * 0.12) * delta;
-    group.rotation.y += (0.42 + Math.cos(time * 0.55) * 0.18) * delta;
-    group.rotation.z += (0.16 + Math.sin(time * 1.1) * 0.08) * delta;
+    // Hero3 到達後もゆっくり回転は継続（位置・スケールのみ固定）
+    const speed = locked ? 0.55 : 1;
+    group.rotation.x += (0.28 + Math.sin(time * 0.7) * 0.12) * delta * speed;
+    group.rotation.y += (0.42 + Math.cos(time * 0.55) * 0.18) * delta * speed;
+    group.rotation.z += (0.16 + Math.sin(time * 1.1) * 0.08) * delta * speed;
   });
 
   return (

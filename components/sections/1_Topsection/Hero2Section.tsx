@@ -6,8 +6,14 @@ export default function Hero2Section() {
       <div className="sticky top-0 flex h-dvh w-full items-end">
         <div className="section-inner flex w-full items-end justify-between pb-12">
           <div className="max-w-md">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/80">
-              Stage 02
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.28em] text-sky-300/80">
+              Mission
+            </p>
+            <h2 className="font-heading mb-3 text-2xl leading-snug text-white md:text-3xl lg:text-4xl">
+              サッカーの経験を、仕事の力に。
+            </h2>
+            <p className="text-sm leading-relaxed text-white/70 md:text-base">
+              プレーで培った行動力・チームワーク・挑戦心を、ビジネスの現場で発揮する。
             </p>
           </div>
           <div className="hidden flex-col items-end gap-2 md:flex">

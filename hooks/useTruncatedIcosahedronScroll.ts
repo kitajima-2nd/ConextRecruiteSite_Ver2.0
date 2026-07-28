@@ -9,8 +9,14 @@ export type TruncatedIcosahedronScrollState = {
   stageProgress: number;
   /** 3セクション全体の進捗 0〜1 */
   globalProgress: number;
-  /** 3D背景を表示するか（Hero3通過後は非表示） */
+  /** 3D背景を表示するか（Hero3が画面外へ抜け切ったら非表示） */
   visible: boolean;
+  /**
+   * Hero3 が上方向へ抜けた量（px）。
+   * Hero3 到達前は 0、抜け始めは負方向（例: -200）。
+   * fixed 背景を同じ量だけ translateY してスクロールアウトさせる。
+   */
+  exitOffsetY: number;
 };
 
 const INITIAL_STATE: TruncatedIcosahedronScrollState = {
@@ -18,6 +24,7 @@ const INITIAL_STATE: TruncatedIcosahedronScrollState = {
   stageProgress: 0,
   globalProgress: 0,
   visible: true,
+  exitOffsetY: 0,
 };
 
 function clamp(value: number, min: number, max: number) {
@@ -37,7 +44,8 @@ export function lerp(a: number, b: number, t: number) {
 export function getTruncatedIcosahedronTransform(
   globalProgress: number,
   stageProgress: number,
-  time: number
+  time: number,
+  stageIndex = 0
 ) {
   const stage1End = 1 / 3;
   const stage2End = 2 / 3;
@@ -45,9 +53,13 @@ export function getTruncatedIcosahedronTransform(
   const toStage1 = smoothstep(0, stage1End, globalProgress);
   const toStage2 = smoothstep(stage1End, stage2End, globalProgress);
 
+  // Hero3 到達後は位置・スケールを固定（脈動も停止）
+  const locked = stageIndex >= 2 || globalProgress >= stage2End;
+
   const baseScale = lerp(lerp(2.8, 2.0, toStage1), 0.82, toStage2);
-  const pulse =
-    toStage2 > 0
+  const pulse = locked
+    ? 1
+    : toStage2 > 0
       ? 1 + 0.1 * Math.sin(stageProgress * Math.PI * 5 + time * 2.2)
       : 1 + 0.03 * Math.sin(time * 1.4);
 
@@ -55,7 +67,7 @@ export function getTruncatedIcosahedronTransform(
   const positionX = lerp(0, 2.15, toStage2);
   const positionY = lerp(0, -0.15, toStage2);
 
-  return { scale, positionX, positionY, toStage2 };
+  return { scale, positionX, positionY, toStage2, locked };
 }
 
 function isSameScrollState(
@@ -66,7 +78,8 @@ function isSameScrollState(
     a.stageIndex === b.stageIndex &&
     a.visible === b.visible &&
     Math.abs(a.stageProgress - b.stageProgress) < 0.0001 &&
-    Math.abs(a.globalProgress - b.globalProgress) < 0.0001
+    Math.abs(a.globalProgress - b.globalProgress) < 0.0001 &&
+    Math.abs(a.exitOffsetY - b.exitOffsetY) < 0.5
   );
 }
 
@@ -87,7 +100,12 @@ export function useTruncatedIcosahedronScroll(
       const count = refs.length;
       const lastSection = refs[count - 1]?.current;
       const lastRect = lastSection?.getBoundingClientRect();
-      const visible = lastRect ? lastRect.bottom > window.innerHeight * 0.15 : true;
+
+      // Hero3 が画面から完全に出たら非表示（スクロール同期で消えた後）
+      const visible = lastRect ? lastRect.bottom > 0 : true;
+      // Hero3 の上端が画面上より上なら、その分だけ背景も一緒に上げる
+      const exitOffsetY =
+        lastRect && lastRect.top < 0 ? lastRect.top : 0;
 
       for (let i = 0; i < count; i++) {
         const el = refs[i].current;
@@ -102,7 +120,13 @@ export function useTruncatedIcosahedronScroll(
         if (scrollY < bottom || isLast) {
           const stageProgress = clamp((scrollY - top) / height, 0, 1);
           const globalProgress = clamp((i + stageProgress) / count, 0, 1);
-          const next = { stageIndex: i, stageProgress, globalProgress, visible };
+          const next = {
+            stageIndex: i,
+            stageProgress,
+            globalProgress,
+            visible,
+            exitOffsetY,
+          };
           setState((prev) => (isSameScrollState(prev, next) ? prev : next));
           return;
         }

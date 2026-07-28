@@ -12,14 +12,14 @@ export default function HeroSection() {
         />
       </div>
 
-      <div className="absolute inset-0 z-20 bg-linear-to-b from-black/60 via-black/20 to-black/10" />
+      <div className="absolute inset-0 z-20" />
 
       <div className="relative z-30 flex h-full flex-col justify-between px-6 pb-10 pt-[calc(var(--header-height)+2rem)] md:px-10 lg:px-16">
         <div className="max-w-4xl">
           <p className="mb-4 text-xs font-semibold uppercase tracking-[0.32em] text-sky-300">
             Recruit Site
           </p>
-          <h1 className="font-heading text-5xl italic leading-[0.95] text-white md:text-7xl lg:text-8xl">
+          <h1 className="font-heading text-5xl italic leading-[0.95] text-blue-800 md:text-7xl lg:text-8xl">
             <span className="block">Be a</span>
             <span className="block text-sky-300">Soccer</span>
             <span className="block">Company</span>

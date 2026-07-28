@@ -2,7 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TopSection from "@/components/sections/1_Topsection/1_Topsection";
+import TopSection from "@/components/sections/1_Topsection/Topsection";
 import KnowConextSection from "@/components/sections/4_KnowConextSection/KnowConextSection";
 import MasterSection from "@/components/sections/5_MasterSection.tsx/MasterSection";
 import ShowtimeSection from "@/components/sections/6_ShowtimeSection/ShowtimeSection";
