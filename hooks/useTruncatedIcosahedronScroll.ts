@@ -12,8 +12,8 @@ export type TruncatedIcosahedronScrollState = {
   /** 3D背景を表示するか（Hero3が画面外へ抜け切ったら非表示） */
   visible: boolean;
   /**
-   * Hero3 が上方向へ抜けた量（px）。
-   * Hero3 到達前は 0、抜け始めは負方向（例: -200）。
+   * Hero3 が sticky 走行を終えて上方向へ抜けた量（px）。
+   * sticky 中は 0、抜け始めは負方向（例: -200）。
    * fixed 背景を同じ量だけ translateY してスクロールアウトさせる。
    */
   exitOffsetY: number;
@@ -45,7 +45,9 @@ export function getTruncatedIcosahedronTransform(
   globalProgress: number,
   stageProgress: number,
   time: number,
-  stageIndex = 0
+  stageIndex = 0,
+  /** R3F viewport.width（ワールド単位、画面幅 100vw 相当） */
+  viewportWidth = 6.4
 ) {
   const stage1End = 1 / 3;
   const stage2End = 2 / 3;
@@ -64,7 +66,10 @@ export function getTruncatedIcosahedronTransform(
       : 1 + 0.03 * Math.sin(time * 1.4);
 
   const scale = baseScale * pulse;
-  const positionX = lerp(0, 2.15, toStage2);
+  // 画面幅に比例（デスクトップ相当で約 2.15）。70% まではみ出し可・30% は必ず残す
+  const desiredX = viewportWidth * 0.34;
+  const maxX = viewportWidth / 2 + scale * 0.7;
+  const positionX = lerp(0, Math.min(desiredX, maxX), toStage2);
   const positionY = lerp(0, -0.15, toStage2);
 
   return { scale, positionX, positionY, toStage2, locked };
@@ -103,9 +108,14 @@ export function useTruncatedIcosahedronScroll(
 
       // Hero3 が画面から完全に出たら非表示（スクロール同期で消えた後）
       const visible = lastRect ? lastRect.bottom > 0 : true;
-      // Hero3 の上端が画面上より上なら、その分だけ背景も一緒に上げる
+      // sticky 走行分を超えてから背景を一緒に上げる（200dvh sticky 対応）
+      const stickyTravel = lastRect
+        ? Math.max(0, lastRect.height - window.innerHeight)
+        : 0;
       const exitOffsetY =
-        lastRect && lastRect.top < 0 ? lastRect.top : 0;
+        lastRect && lastRect.top < -stickyTravel
+          ? lastRect.top + stickyTravel
+          : 0;
 
       for (let i = 0; i < count; i++) {
         const el = refs[i].current;

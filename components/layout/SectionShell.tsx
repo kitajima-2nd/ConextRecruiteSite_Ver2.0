@@ -15,8 +15,8 @@ type SectionShellProps = {
 
 const variantClasses: Record<NonNullable<SectionShellProps["variant"]>, string> = {
   light: "bg-white text-neutral-900",
-  muted: "bg-neutral-50 text-neutral-900",
-  dark: "bg-neutral-950 text-white",
+  muted: "bg-brand-blue-wash text-neutral-900",
+  dark: "bg-white text-neutral-900",
   transparent: "bg-transparent",
 };
 

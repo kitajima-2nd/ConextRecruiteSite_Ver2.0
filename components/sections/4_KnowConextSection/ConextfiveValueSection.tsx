@@ -66,13 +66,13 @@ function ValueTile({
           : { opacity: 0, y: reduceMotion ? 0 : 18 }
       }
       transition={{ duration, delay: reduceMotion ? 0 : delay, ease: "easeOut" }}
-      className={`group relative overflow-hidden rounded-2xl bg-linear-to-br from-sky-50/80 to-white px-6 py-7 pl-7 transition-colors duration-300 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-sky-300 before:transition-colors before:duration-300 hover:before:bg-sky-500 md:px-8 md:py-8 md:pl-8 ${
+      className={`group relative overflow-hidden rounded-2xl bg-linear-to-br from-brand-blue-wash to-white px-6 py-7 pl-7 transition-colors duration-300 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-brand-blue-soft before:transition-colors before:duration-300 hover:before:bg-brand-blue-mid md:px-8 md:py-8 md:pl-8 ${
         featured ? "md:min-h-56 lg:col-span-2" : ""
       }`}
     >
       <span
         aria-hidden
-        className={`pointer-events-none absolute -right-1 -top-2 font-heading font-bold leading-none text-sky-100 transition-colors duration-300 group-hover:text-sky-300/90 ${
+        className={`pointer-events-none absolute -right-1 -top-2 font-heading font-bold leading-none text-brand-blue-soft/70 transition-colors duration-300 group-hover:text-brand-blue-soft ${
           featured
             ? "text-7xl md:text-8xl lg:text-9xl"
             : "text-6xl md:text-7xl"
@@ -90,7 +90,7 @@ function ValueTile({
             delay: reduceMotion ? 0 : delay + 0.08,
             ease: "easeOut",
           }}
-          className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-600"
+          className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-brand-blue-mid"
         >
           {value.title}
         </motion.p>
@@ -150,17 +150,18 @@ export default function ConextfiveValueSection({ className = "" }: classNameProp
     >
       <SectionHeading
         align="left"
-        eyebrow="Conext Five Values"
+        eyebrow="Values"
         title={
           <>
             大切にしている
-            <span className="text-sky-500">5つの価値観</span>
+            <br />
+            <span className="text-brand-red">5つの価値観</span>
           </>
         }
         description="サッカーで培った強みを、ビジネスの現場でも活かすための行動指針です。"
         className="mb-3 max-w-2xl"
       />
-      <div className="mb-10 h-px w-16 bg-sky-400" aria-hidden />
+      <div className="rule-sky mb-10" aria-hidden />
 
       <div
         ref={gridRef}

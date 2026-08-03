@@ -13,29 +13,33 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
   {
-    label: "Conextを知る",
+    label: "About",
     href: null,
     submenu: [
-      { label: "SERVICE", href: "#service" },
-      { label: "PROJECT", href: "#project" },
-      { label: "VOICE", href: "#voice" },
+      { label: "Values", href: "#service" },
+      { label: "Project", href: "#project" },
+      { label: "Voice", href: "#voice" },
+      { label: "Company", href: "#company" },
     ],
   },
   {
-    label: "企業情報",
-    href: "#company",
+    label: "News",
+    href: "#news",
   },
   {
-    label: "採用情報",
+    label: "Recruit",
     href: "#recruit",
   },
 ];
+
+const linkClass =
+  "text-xs font-medium uppercase tracking-[0.22em] text-neutral-600 transition-colors hover:text-neutral-950";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-sm backdrop-blur-sm">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200/80 bg-white/95 backdrop-blur-sm">
       <nav className="section-inner flex h-[var(--header-height)] items-center justify-between py-0">
         <Link href="/" className="flex items-center">
           <Image
@@ -50,21 +54,19 @@ export default function Header() {
           />
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-10 md:flex">
           {menuItems.map((item, index) => (
             <div key={index}>
               {item.submenu ? (
                 <div className="group relative">
-                  <button className="text-sm font-medium text-neutral-700 transition-colors hover:text-neutral-950">
-                    {item.label}
-                  </button>
+                  <button className={linkClass}>{item.label}</button>
                   <div className="absolute left-0 top-full hidden pt-3 group-hover:block">
-                    <ul className="m-0 min-w-48 list-none overflow-hidden rounded-xl border border-neutral-100 bg-white p-1 shadow-xl">
+                    <ul className="m-0 min-w-44 list-none overflow-hidden border border-neutral-200 bg-white p-1 shadow-lg">
                       {item.submenu.map((subItem, subIndex) => (
                         <li key={subIndex}>
                           <Link
                             href={subItem.href}
-                            className="block rounded-lg px-4 py-2.5 text-sm text-neutral-700 transition-colors hover:bg-neutral-50"
+                            className="block px-4 py-2.5 text-xs uppercase tracking-[0.18em] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
                           >
                             {subItem.label}
                           </Link>
@@ -74,10 +76,7 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link
-                  href={item.href!}
-                  className="text-sm font-medium text-neutral-700 transition-colors hover:text-neutral-950"
-                >
+                <Link href={item.href!} className={linkClass}>
                   {item.label}
                 </Link>
               )}
@@ -85,9 +84,9 @@ export default function Header() {
           ))}
           <Link
             href="#entry"
-            className="rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-neutral-800"
+            className="rounded-full bg-brand-red px-5 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-brand-red-deep"
           >
-            ENTRY
+            Entry
           </Link>
         </div>
 
@@ -123,7 +122,7 @@ export default function Header() {
               <div key={index}>
                 {item.submenu ? (
                   <>
-                    <div className="py-2 text-sm font-semibold text-neutral-900">
+                    <div className="py-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-900">
                       {item.label}
                     </div>
                     <ul className="m-0 list-none p-0">
@@ -143,7 +142,7 @@ export default function Header() {
                 ) : (
                   <Link
                     href={item.href!}
-                    className="block py-2 text-sm text-neutral-700"
+                    className="block py-2 text-xs uppercase tracking-[0.2em] text-neutral-700"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.label}
@@ -153,10 +152,10 @@ export default function Header() {
             ))}
             <Link
               href="#entry"
-              className="mt-4 block rounded-full bg-neutral-950 px-6 py-3 text-center text-sm font-bold text-white"
+              className="mt-4 block rounded-full bg-brand-red px-6 py-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-brand-red-deep"
               onClick={() => setIsMenuOpen(false)}
             >
-              ENTRY
+              Entry
             </Link>
           </div>
         </div>

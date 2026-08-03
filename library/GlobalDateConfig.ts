@@ -52,6 +52,18 @@ export interface CompanyData {
       email?: string;
       phone?: string;
     };
+
+    // スポンサー・パートナーシップ（配列追加で拡張可）
+    partnerships?: {
+      label: string;
+      name: string;
+      note?: string;
+      supportMessage?: string;
+      logo?: {
+        path: string;
+        alt: string;
+      };
+    }[];
     
     // ヒーローセクション用スライドショー画像（TopBackgroundSlideshow）
     heroSlideshow?: {
@@ -104,6 +116,19 @@ export interface CompanyData {
       email: "ここにtestをいれます",
       phone: "ここにtestをいれます",
     },
+
+    partnerships: [
+      {
+        label: "スポンサー",
+        name: "浦和レッズ",
+        note: "Jリーグ オフィシャルパートナー",
+        supportMessage: "当社はJリーグ浦和レッズのオフィシャルパートナーです。",
+        logo: {
+          path: "/images/partners/urawa-reds.png",
+          alt: "浦和レッズ",
+        },
+      },
+    ],
     
     // ヒーローセクション用スライドショー画像
     heroSlideshow: {

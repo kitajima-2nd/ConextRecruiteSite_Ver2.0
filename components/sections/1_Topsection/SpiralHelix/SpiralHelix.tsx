@@ -73,6 +73,7 @@ export default function SpiralHelix({
   images,
   rotationSpeed = 0.002,
 }: SpiralHelixProps) {
+  const outerRef = useRef<THREE.Group>(null);
   const helixRef = useRef<THREE.Group>(null);
 
   const layout = useMemo(
@@ -85,25 +86,37 @@ export default function SpiralHelix({
   );
 
   const yOffset = -((images.length - 1) * layout.heightStep) / 2;
+  const axisTiltZ = THREE.MathUtils.degToRad(-5);
 
-  useFrame(() => {
+  useFrame((state) => {
+    const vw = state.viewport.width;
+    const scale = state.size.width >= 768 ? 1.3 : 1;
+    const effectiveRadius = layout.radius * scale;
+    const desiredX = vw * 0.22;
+    const maxX = Math.max(0, vw / 2 - effectiveRadius * 0.35);
+    if (outerRef.current) {
+      outerRef.current.scale.setScalar(scale);
+      outerRef.current.position.x = Math.min(desiredX, maxX);
+    }
     if (helixRef.current) {
       helixRef.current.rotation.y += rotationSpeed;
     }
   });
 
   return (
-    <group ref={helixRef} rotation={[0, 2.9, 0]} position={[0, yOffset, 0]}>
-      {images.map((image, index) => (
-        <SpiralPanel
-          key={`${image.path}-${index}`}
-          url={image.path}
-          index={index}
-          radius={layout.radius}
-          heightStep={layout.heightStep}
-          angleStep={layout.angleStep}
-        />
-      ))}
+    <group ref={outerRef} rotation={[0, 0, axisTiltZ]}>
+      <group ref={helixRef} rotation={[0, 2.9, 0]} position={[0, yOffset, 0]}>
+        {images.map((image, index) => (
+          <SpiralPanel
+            key={`${image.path}-${index}`}
+            url={image.path}
+            index={index}
+            radius={layout.radius}
+            heightStep={layout.heightStep}
+            angleStep={layout.angleStep}
+          />
+        ))}
+      </group>
     </group>
   );
 }

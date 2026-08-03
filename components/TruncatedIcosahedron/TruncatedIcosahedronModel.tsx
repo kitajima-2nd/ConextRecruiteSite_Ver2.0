@@ -9,6 +9,9 @@ import {
   type TruncatedIcosahedronScrollState,
 } from "@/hooks/useTruncatedIcosahedronScroll";
 
+/** トリコロール外の例外色（コバルトブルー固定） */
+const WIRE_COLOR = "#0047AB";
+
 type TruncatedIcosahedronModelProps = {
   scrollState: TruncatedIcosahedronScrollState;
 };
@@ -39,7 +42,8 @@ export default function TruncatedIcosahedronModel({
         scrollState.globalProgress,
         scrollState.stageProgress,
         time,
-        scrollState.stageIndex
+        scrollState.stageIndex,
+        state.viewport.width
       );
 
     group.scale.setScalar(scale);
@@ -55,7 +59,7 @@ export default function TruncatedIcosahedronModel({
     <group ref={groupRef}>
       <lineSegments geometry={lineGeometry}>
         <lineBasicMaterial
-          color="#8fd3ff"
+          color={WIRE_COLOR}
           toneMapped={false}
           depthWrite={false}
         />
