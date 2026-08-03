@@ -28,4 +28,3 @@ export const SectionAnimationProvider = ({
  * セクションが50%以上見えているかどうかを返す
  */
 export const useSectionAnimation = () => useContext(SectionAnimationContext);
-

@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
@@ -30,9 +32,114 @@ const values = [
     label: "楽しさ",
     description: "仕事もサッカーも、前向きな熱量と楽しさを忘れずに取り組みます。",
   },
-];
+] as const;
+
+type ValueItem = (typeof values)[number];
+
+type ValueTileProps = {
+  value: ValueItem;
+  index: number;
+  featured?: boolean;
+  delay: number;
+  active: boolean;
+  reduceMotion: boolean | null;
+};
+
+function ValueTile({
+  value,
+  index,
+  featured = false,
+  delay,
+  active,
+  reduceMotion,
+}: ValueTileProps) {
+  const number = String(index + 1).padStart(2, "0");
+  const duration = reduceMotion ? 0.01 : 0.55;
+  const show = active || !!reduceMotion;
+
+  return (
+    <motion.article
+      initial={false}
+      animate={
+        show
+          ? { opacity: 1, y: 0 }
+          : { opacity: 0, y: reduceMotion ? 0 : 18 }
+      }
+      transition={{ duration, delay: reduceMotion ? 0 : delay, ease: "easeOut" }}
+      className={`group relative overflow-hidden rounded-2xl bg-linear-to-br from-sky-50/80 to-white px-6 py-7 pl-7 transition-colors duration-300 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-sky-300 before:transition-colors before:duration-300 hover:before:bg-sky-500 md:px-8 md:py-8 md:pl-8 ${
+        featured ? "md:min-h-56 lg:col-span-2" : ""
+      }`}
+    >
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute -right-1 -top-2 font-heading font-bold leading-none text-sky-100 transition-colors duration-300 group-hover:text-sky-300/90 ${
+          featured
+            ? "text-7xl md:text-8xl lg:text-9xl"
+            : "text-6xl md:text-7xl"
+        }`}
+      >
+        {number}
+      </span>
+
+      <div className={`relative ${featured ? "max-w-xl" : ""}`}>
+        <motion.p
+          initial={false}
+          animate={{ opacity: show ? 1 : 0 }}
+          transition={{
+            duration,
+            delay: reduceMotion ? 0 : delay + 0.08,
+            ease: "easeOut",
+          }}
+          className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-sky-600"
+        >
+          {value.title}
+        </motion.p>
+        <motion.h3
+          initial={false}
+          animate={
+            show
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: reduceMotion ? 0 : 8 }
+          }
+          transition={{
+            duration,
+            delay: reduceMotion ? 0 : delay + 0.14,
+            ease: "easeOut",
+          }}
+          className={`mb-3 font-bold text-neutral-900 ${
+            featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
+          }`}
+        >
+          {value.label}
+        </motion.h3>
+        <motion.p
+          initial={false}
+          animate={
+            show
+              ? { opacity: 1, y: 0 }
+              : { opacity: 0, y: reduceMotion ? 0 : 8 }
+          }
+          transition={{
+            duration,
+            delay: reduceMotion ? 0 : delay + 0.2,
+            ease: "easeOut",
+          }}
+          className={`leading-relaxed text-neutral-600 transition-colors duration-300 group-hover:text-neutral-800 ${
+            featured ? "text-sm md:text-base" : "text-sm"
+          }`}
+        >
+          {value.description}
+        </motion.p>
+      </div>
+    </motion.article>
+  );
+}
 
 export default function ConextfiveValueSection({ className = "" }: classNameProps) {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(gridRef, { once: true, amount: 0.2 });
+  const reduceMotion = useReducedMotion();
+
   return (
     <SectionShell
       id="service"
@@ -51,23 +158,24 @@ export default function ConextfiveValueSection({ className = "" }: classNameProp
           </>
         }
         description="サッカーで培った強みを、ビジネスの現場でも活かすための行動指針です。"
-        className="mb-10 max-w-2xl"
+        className="mb-3 max-w-2xl"
       />
+      <div className="mb-10 h-px w-16 bg-sky-400" aria-hidden />
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3"
+      >
         {values.map((value, index) => (
-          <article
+          <ValueTile
             key={value.title}
-            className={`rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm ${
-              index === 0 ? "md:col-span-2 lg:col-span-1" : ""
-            }`}
-          >
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-sky-600">
-              {value.title}
-            </p>
-            <h3 className="mb-3 text-xl font-bold text-neutral-900">{value.label}</h3>
-            <p className="text-sm leading-relaxed text-neutral-600">{value.description}</p>
-          </article>
+            value={value}
+            index={index}
+            featured={index === 0}
+            delay={index * 0.08}
+            active={inView}
+            reduceMotion={reduceMotion}
+          />
         ))}
       </div>
     </SectionShell>

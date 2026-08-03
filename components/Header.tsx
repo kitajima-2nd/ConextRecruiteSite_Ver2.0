@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { companyData } from "@/library/GlobalDateConfig";
-import { useHeaderScroll } from "@/hooks/useHeaderScroll";
 
 type MenuItem = {
   label: string;
@@ -34,24 +33,9 @@ const menuItems: MenuItem[] = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const scrolled = useHeaderScroll();
-
-  const headerClass = scrolled
-    ? "bg-white/95 shadow-sm backdrop-blur-md"
-    : "bg-transparent";
-
-  const linkClass = scrolled
-    ? "text-neutral-700 hover:text-neutral-950"
-    : "text-white/90 hover:text-white";
-
-  const entryClass = scrolled
-    ? "bg-neutral-950 text-white hover:bg-neutral-800"
-    : "bg-white text-neutral-950 hover:bg-white/90";
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${headerClass}`}
-    >
+    <header className="fixed inset-x-0 top-0 z-50 bg-white/95 shadow-sm backdrop-blur-sm">
       <nav className="section-inner flex h-[var(--header-height)] items-center justify-between py-0">
         <Link href="/" className="flex items-center">
           <Image
@@ -59,7 +43,7 @@ export default function Header() {
             alt={companyData.logo.alt}
             width={120}
             height={40}
-            className={`h-9 w-auto transition-all md:h-10 ${scrolled ? "" : "brightness-0 invert"}`}
+            className="h-9 w-auto md:h-10"
             quality={100}
             priority
             unoptimized
@@ -71,7 +55,7 @@ export default function Header() {
             <div key={index}>
               {item.submenu ? (
                 <div className="group relative">
-                  <button className={`text-sm font-medium transition-colors ${linkClass}`}>
+                  <button className="text-sm font-medium text-neutral-700 transition-colors hover:text-neutral-950">
                     {item.label}
                   </button>
                   <div className="absolute left-0 top-full hidden pt-3 group-hover:block">
@@ -92,7 +76,7 @@ export default function Header() {
               ) : (
                 <Link
                   href={item.href!}
-                  className={`text-sm font-medium transition-colors ${linkClass}`}
+                  className="text-sm font-medium text-neutral-700 transition-colors hover:text-neutral-950"
                 >
                   {item.label}
                 </Link>
@@ -101,14 +85,14 @@ export default function Header() {
           ))}
           <Link
             href="#entry"
-            className={`rounded-full px-5 py-2.5 text-sm font-bold transition-colors ${entryClass}`}
+            className="rounded-full bg-neutral-950 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-neutral-800"
           >
             ENTRY
           </Link>
         </div>
 
         <button
-          className={`rounded-lg p-2 md:hidden ${scrolled ? "text-neutral-900" : "text-white"}`}
+          className="rounded-lg p-2 text-neutral-900 md:hidden"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="メニュー"
         >
