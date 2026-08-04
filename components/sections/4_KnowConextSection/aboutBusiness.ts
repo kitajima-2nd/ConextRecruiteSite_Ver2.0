@@ -30,7 +30,7 @@ export const businessNodes: BusinessNode[] = [
     id: "recruit",
     number: "02",
     eyebrow: "Recruit",
-    title: "サッカーを通じたリクルート事業",
+    title: "リクルート事業",
     description:
       "就活フットサルやスポーツ HR など、サッカー起点で採用・キャリアのきっかけをつくります。",
     tags: ["SPORTS × HR", "就活フットサル", "キャリア支援"],
@@ -55,7 +55,7 @@ export const businessEdges: BusinessEdge[] = [
   {
     from: "recruit",
     to: "sales",
-    label: "人の力が現場へ",
+    label: "サッカー人の力が現場へ",
   },
   {
     from: "sales",

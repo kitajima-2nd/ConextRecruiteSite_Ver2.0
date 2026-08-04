@@ -19,6 +19,7 @@ export default function Footer() {
               width={120}
               height={40}
               className="mb-5 h-10 w-auto"
+              style={{ width: "auto" }}
             />
             <p className="mb-2 font-medium text-brand-blue">{companyData.companyName}</p>
             <p className="mb-4 max-w-md text-sm leading-relaxed text-neutral-600">
@@ -100,6 +101,7 @@ export default function Footer() {
                       width={120}
                       height={32}
                       className="h-7 w-auto"
+                      style={{ width: "auto" }}
                     />
                   ) : null}
                   {partner.supportMessage ? (

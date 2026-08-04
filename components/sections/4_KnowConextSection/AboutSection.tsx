@@ -10,7 +10,6 @@ import {
   type BusinessNode,
 } from "@/components/sections/4_KnowConextSection/aboutBusiness";
 
-const CARD_ORBIT_TOP_PCT = 10; // カード中心の位置（親高さの上から）。円周付近
 const CARD_WIDTH_CLASS = "w-[34%] sm:w-[32%]";
 
 function BusinessCard({ node }: { node: BusinessNode }) {
@@ -78,83 +77,84 @@ function CircleDiagram() {
   ] as const;
 
   return (
-    <div className="relative mx-auto aspect-square w-full max-w-md lg:max-w-xl">
-      <div className="about-ring-spin pointer-events-none absolute inset-[6%]">
-        <div className="about-ring-breathe h-full w-full text-brand-blue-mid/50">
-          <svg
-            className="h-full w-full"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="xMidYMid meet"
-            aria-hidden
-          >
-            <circle
-              cx="50"
-              cy="50"
-              r="42"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.9"
-              strokeDasharray="2.2 1.6"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="34"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.4"
-              strokeDasharray="1.4 1.2"
-              opacity="0.5"
-            />
-            <path
-              d="M50 8 A42 42 0 0 1 86 71"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="0.55"
-              strokeDasharray="1.8 1.4"
-              opacity="0.55"
-              markerEnd="url(#cycle-arrow)"
-            />
-            <defs>
-              <marker
-                id="cycle-arrow"
-                markerWidth="4"
-                markerHeight="4"
-                refX="3"
-                refY="2"
-                orient="auto"
-              >
-                <path d="M0 0 L4 2 L0 4 Z" fill="currentColor" />
-              </marker>
-            </defs>
-          </svg>
-        </div>
-      </div>
-
-      <p className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 text-center text-[0.65rem] font-medium tracking-[0.28em] text-brand-blue-mid">
-        CYCLE
-        <br />
-        CONEXT
-      </p>
-
-      {/* 親サイズ基準で円周配置（translate% は要素自身基準のため使わない） */}
-      {placements.map(({ node, deg }) => (
-        <div
-          key={node.id}
-          className="pointer-events-none absolute inset-0"
-          style={{ transform: `rotate(${deg}deg)` }}
-        >
-          <div
-            className={`pointer-events-auto absolute left-1/2 z-10 ${CARD_WIDTH_CLASS}`}
-            style={{
-              top: `${CARD_ORBIT_TOP_PCT}%`,
-              transform: `translate(-50%, -50%) rotate(${-deg}deg)`,
-            }}
-          >
-            <BusinessCard node={node} />
+    <div className="mx-auto w-full max-w-md pt-16 sm:pt-20 lg:max-w-xl lg:pt-0">
+      <div className="relative aspect-square w-full">
+        <div className="about-ring-spin pointer-events-none absolute inset-[6%]">
+          <div className="about-ring-breathe h-full w-full text-brand-blue-mid/50">
+            <svg
+              className="h-full w-full"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="xMidYMid meet"
+              aria-hidden
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="42"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.9"
+                strokeDasharray="2.2 1.6"
+              />
+              <circle
+                cx="50"
+                cy="50"
+                r="34"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.4"
+                strokeDasharray="1.4 1.2"
+                opacity="0.5"
+              />
+              <path
+                d="M50 8 A42 42 0 0 1 86 71"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="0.55"
+                strokeDasharray="1.8 1.4"
+                opacity="0.55"
+                markerEnd="url(#cycle-arrow)"
+              />
+              <defs>
+                <marker
+                  id="cycle-arrow"
+                  markerWidth="4"
+                  markerHeight="4"
+                  refX="3"
+                  refY="2"
+                  orient="auto"
+                >
+                  <path d="M0 0 L4 2 L0 4 Z" fill="currentColor" />
+                </marker>
+              </defs>
+            </svg>
           </div>
         </div>
-      ))}
+
+        <p className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 text-center text-[0.65rem] font-medium tracking-[0.28em] text-brand-blue-mid">
+          CYCLE
+          <br />
+          CONEXT
+        </p>
+
+        {/* 親サイズ基準で円周配置（translate% は要素自身基準のため使わない） */}
+        {placements.map(({ node, deg }) => (
+          <div
+            key={node.id}
+            className="pointer-events-none absolute inset-0"
+            style={{ transform: `rotate(${deg}deg)` }}
+          >
+            <div
+              className={`pointer-events-auto absolute top-[18%] left-1/2 z-10 lg:top-[10%] ${CARD_WIDTH_CLASS}`}
+              style={{
+                transform: `translate(-50%, -50%) rotate(${-deg}deg)`,
+              }}
+            >
+              <BusinessCard node={node} />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -168,14 +168,14 @@ export default function AboutSection({ className = "" }: classNameProps) {
       className={`flex items-center py-6! md:py-8! lg:h-dvh lg:overflow-hidden lg:py-5! ${className}`}
       innerClassName="w-full"
     >
-      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
         <div className="min-w-0">
           <SectionHeading
             align="left"
             eyebrow="Project"
             title="事業内容"
             description={cycleIntro}
-            className="mb-5 max-w-xl [&_.section-eyebrow]:mb-1.5 [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:lg:text-4xl [&_p]:mt-2 [&_p]:text-sm"
+            className="mb-10 max-w-2xl"
           />
           <DescriptionStack />
         </div>

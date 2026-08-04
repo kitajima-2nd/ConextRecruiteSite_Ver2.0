@@ -14,8 +14,8 @@ import {
 const ROTATE_MS = 4000;
 const STRIP_COUNT = 3;
 const SLIDE_EASE = [0.17, 0.84, 0.44, 1] as const;
-/** 帯内1枚分の幅（%）。3枚が横並びで少し重なる */
-const CARD_PCT = 38;
+/** 帯内1枚分の幅（%）。3枚が横並びで少し重なる（旧38の1.3倍） */
+const CARD_PCT = 49.4;
 
 function mod(index: number, n: number) {
   return ((index % n) + n) % n;
