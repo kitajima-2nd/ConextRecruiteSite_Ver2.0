@@ -2,7 +2,7 @@
 
 import { RefObject, useEffect, useState } from "react";
 
-export type HeroScrollPhase = "pin" | "slow" | "exit";
+export type HeroScrollPhase = "pin" | "slow" | "hold" | "exit";
 
 export type HeroScrollPhasesState = {
   /** sticky 内側コンテンツの上方向オフセット（px、負値） */
@@ -10,11 +10,11 @@ export type HeroScrollPhasesState = {
   phase: HeroScrollPhase;
 };
 
-/** トラック全体の高さ（vh） */
+/** トラック全体の高さ（vh）— sticky 走行 200vh 用に 300 維持 */
 export const HERO_TRACK_VH = 300;
 /** ここまで視覚固定（vh） */
 export const HERO_PIN_END_VH = 100;
-/** スロー区間の終端（vh） */
+/** スロー区間の終端（vh）— ここから Hero2 へ自動遷移 */
 export const HERO_SLOW_END_VH = 200;
 /** Phase B の視覚移動レート（1/5） */
 export const HERO_SLOW_RATE = 0.2;
@@ -36,7 +36,7 @@ function lerp(a: number, b: number, t: number) {
  * Hero トラック内の局所スクロールから exitOffsetY を算出。
  * Phase A (0–100vh): 固定
  * Phase B (100–200vh): 視覚 1/5
- * Phase C (200–300vh): 残りを通常相当で追い切り（約 -1vh まで）
+ * Phase C 以降: slow 終端オフセットを維持（追い切りなし → Topsection が Hero2 へ遷移）
  *
  * ※ transform は sticky 本体ではなく内側ラッパに適用すること。
  */
@@ -50,6 +50,7 @@ export function computeHeroExitOffsetY(
   const pinEnd = (HERO_PIN_END_VH / 100) * vh;
   const slowEnd = (HERO_SLOW_END_VH / 100) * vh;
   const trackEnd = (HERO_TRACK_VH / 100) * vh;
+  const slowExit = -(slowEnd - pinEnd) * HERO_SLOW_RATE;
 
   if (reduceMotion) {
     if (localY <= pinEnd) {
@@ -68,9 +69,7 @@ export function computeHeroExitOffsetY(
     return { exitOffsetY, phase: "slow" };
   }
 
-  const slowExit = -(slowEnd - pinEnd) * HERO_SLOW_RATE;
-  const t = clamp((localY - slowEnd) / Math.max(trackEnd - slowEnd, 1), 0, 1);
-  return { exitOffsetY: lerp(slowExit, -vh, t), phase: "exit" };
+  return { exitOffsetY: slowExit, phase: "hold" };
 }
 
 /**

@@ -38,7 +38,7 @@ export default function HeroSection() {
           href="#recruit"
           className="pointer-events-auto inline-flex items-center rounded-full bg-brand-red px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-brand-red-deep"
         >
-          Recruit
+          ENTRY NOW!!
         </a>
         <div className="flex items-center gap-3 text-neutral-400">
           <span className="text-xs uppercase tracking-[0.24em]">Scroll</span>

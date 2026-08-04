@@ -51,28 +51,46 @@ export function getTruncatedIcosahedronTransform(
 ) {
   const stage1End = 1 / 3;
   const stage2End = 2 / 3;
+  /** Hero2 内で青 hold 完了相当（stageProgress）。ここまで X は左固定 */
+  const xMoveStart = 1 / 3;
 
-  const toStage1 = smoothstep(0, stage1End, globalProgress);
-  const toStage2 = smoothstep(stage1End, stage2End, globalProgress);
-
-  // Hero3 到達後は位置・スケールを固定（脈動も停止）
+  // Hero3 到達後は位置・スケールを固定
   const locked = stageIndex >= 2 || globalProgress >= stage2End;
 
-  const baseScale = lerp(lerp(2.8, 2.0, toStage1), 0.82, toStage2);
-  const pulse = locked
-    ? 1
-    : toStage2 > 0
-      ? 1 + 0.1 * Math.sin(stageProgress * Math.PI * 5 + time * 2.2)
-      : 1 + 0.03 * Math.sin(time * 1.4);
+  const SCALE_HERO = 2.8;
+  const SCALE_SIDE = SCALE_HERO * 0.7; // 初期の 70%
+  const OFFSET_X = viewportWidth * 0.2; // 中心から画面幅の 20%
 
-  const scale = baseScale * pulse;
-  // 画面幅に比例（デスクトップ相当で約 2.15）。70% まではみ出し可・30% は必ず残す
-  const desiredX = viewportWidth * 0.34;
-  const maxX = viewportWidth / 2 + scale * 0.7;
-  const positionX = lerp(0, Math.min(desiredX, maxX), toStage2);
-  const positionY = lerp(0, -0.15, toStage2);
+  let baseScale: number;
+  let positionX: number;
 
-  return { scale, positionX, positionY, toStage2, locked };
+  if (globalProgress < stage1End) {
+    // Hero: 初期のまま
+    baseScale = SCALE_HERO;
+    positionX = 0;
+  } else if (globalProgress < stage2End) {
+    // Hero2 到達: 70%・左。hold 相当までは左固定、その後右へ
+    // 入場直後のごく短い区間で Hero ポーズから到着ポーズへ寄せ、ジャンプ中の飛びを緩和
+    const arriveT = smoothstep(0, 0.08, stageProgress);
+    baseScale = lerp(SCALE_HERO, SCALE_SIDE, arriveT);
+    const xTravel = smoothstep(xMoveStart, 1, stageProgress);
+    const leftX = -OFFSET_X;
+    const traveledX = lerp(leftX, OFFSET_X, xTravel);
+    positionX = lerp(0, traveledX, arriveT);
+  } else {
+    // Hero3: 右で固定
+    baseScale = SCALE_SIDE;
+    positionX = OFFSET_X;
+  }
+
+  const scale = baseScale;
+  const positionY = 0;
+  const toHero2 =
+    globalProgress < stage1End
+      ? 0
+      : smoothstep(stage1End, stage2End, globalProgress);
+
+  return { scale, positionX, positionY, toStage2: toHero2, locked };
 }
 
 function isSameScrollState(
