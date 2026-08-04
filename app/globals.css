@@ -34,6 +34,12 @@ html {
   overflow-y: scroll;
 }
 
+@media (pointer: coarse) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);

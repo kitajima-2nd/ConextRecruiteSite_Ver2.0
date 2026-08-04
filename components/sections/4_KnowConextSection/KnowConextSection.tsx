@@ -1,5 +1,6 @@
 "use client";
 
+import Reveal from "@/components/motion/Reveal";
 import AboutSection from "@/components/sections/4_KnowConextSection/AboutSection";
 import VoiceSection from "@/components/sections/4_KnowConextSection/VoiceSection";
 import CompanyInfoSection from "@/components/sections/4_KnowConextSection/CompanyInfoSection";
@@ -15,12 +16,14 @@ export default function KnowConextSections() {
       {/* h-0 でレイアウトを押し上げず、Values と同時に登場して sticky 固定 */}
       <div className="pointer-events-none sticky top-[calc(var(--header-height)+1rem)] z-40 h-0">
         <div className="px-6 md:px-10">
-          <p className="mb-2 text-xs font-medium tracking-[0.2em] text-brand-blue-mid">
-            ( Know Conext )
-          </p>
-          <h2 className="font-heading text-3xl leading-[1.05] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
-            Conextを知る
-          </h2>
+          <Reveal from="left">
+            <p className="mb-2 text-xs font-medium tracking-[0.2em] text-brand-blue-mid">
+              ( Know Conext )
+            </p>
+            <h2 className="font-heading text-3xl leading-[1.05] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
+              Conextを知る
+            </h2>
+          </Reveal>
         </div>
       </div>
 

@@ -2,6 +2,8 @@
 
 import { RefObject, useEffect, useState } from "react";
 
+const PROGRESS_EPS = 0.002;
+
 /**
  * sticky ピン区間（trackHeight - viewportHeight）におけるスクロール進捗 0→1。
  * prefers-reduced-motion 時は常に 1（最終状態）。
@@ -21,6 +23,8 @@ export function useStickyScrollProgress(
       return;
     }
 
+    let lastCommitted = -1;
+
     const update = () => {
       const el = trackRef.current;
       if (!el) return;
@@ -32,6 +36,16 @@ export function useStickyScrollProgress(
       const vh = window.innerHeight;
       const range = Math.max(height - vh, 1);
       const p = Math.min(1, Math.max(0, (scrollY - top) / range));
+
+      if (
+        lastCommitted >= 0 &&
+        Math.abs(p - lastCommitted) < PROGRESS_EPS &&
+        p !== 0 &&
+        p !== 1
+      ) {
+        return;
+      }
+      lastCommitted = p;
       setProgress(p);
     };
 

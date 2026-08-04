@@ -8,6 +8,7 @@ import {
   HERO_SLOW_END_VH,
   useHeroScrollPhases,
 } from "@/hooks/useHeroScrollPhases";
+import { animateScrollTo } from "@/lib/scroll/animateScrollTo";
 import HeroSection from "./HeroSection";
 import Hero2Section, { HERO2_GROW_END } from "./Hero2Section";
 import Hero3Section from "./Hero3Section";
@@ -27,6 +28,7 @@ export default function TopSection() {
   const jumpLockRef = useRef(false);
   const jumpArmedRef = useRef(true);
   const lastLocalYRef = useRef(0);
+  const jumpReadyRef = useRef(false);
 
   const scrollState = useTruncatedIcosahedronScroll([
     heroRef,
@@ -55,6 +57,16 @@ export default function TopSection() {
       );
       const prev = lastLocalYRef.current;
       lastLocalYRef.current = localY;
+
+      // 初回は位置だけ記録（リロード途中位置での誤ジャンプ防止）
+      if (!jumpReadyRef.current) {
+        jumpReadyRef.current = true;
+        if (localY >= slowEnd) {
+          jumpArmedRef.current = false;
+        }
+        return;
+      }
+
       const scrollingDown = localY > prev;
 
       if (localY < pinEnd) {
@@ -77,7 +89,7 @@ export default function TopSection() {
         const pinRange = Math.max(hero2Rect.height - vh, 1);
         const targetY = hero2Top + HERO2_GROW_END * pinRange;
 
-        window.scrollTo({ top: targetY, behavior: "smooth" });
+        void animateScrollTo(targetY, { durationMs: 650 });
       }
     };
 

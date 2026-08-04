@@ -1,3 +1,7 @@
+"use client";
+
+import Reveal from "@/components/motion/Reveal";
+
 type SectionHeadingProps = {
   eyebrow?: string;
   title: React.ReactNode;
@@ -25,25 +29,32 @@ export default function SectionHeading({
   const titleTone = "text-neutral-900";
   const descTone = "text-neutral-600";
   const eyebrowTone = "text-brand-blue-mid";
+  const headingFrom = align === "left" ? "left" : "right";
 
   return (
     <div className={`section-heading max-w-3xl ${alignClass} ${className}`}>
-      {eyebrow && (
-        <p
-          className={`section-eyebrow mb-4 text-xs font-medium tracking-[0.2em] ${eyebrowTone}`}
+      <Reveal from={headingFrom}>
+        {eyebrow && (
+          <p
+            className={`section-eyebrow mb-4 text-xs font-medium tracking-[0.2em] ${eyebrowTone}`}
+          >
+            {formatEyebrow(eyebrow)}
+          </p>
+        )}
+        <h2
+          className={`font-heading text-4xl leading-[1.05] tracking-tight md:text-5xl lg:text-6xl ${titleTone}`}
         >
-          {formatEyebrow(eyebrow)}
-        </p>
-      )}
-      <h2
-        className={`font-heading text-4xl leading-[1.05] tracking-tight md:text-5xl lg:text-6xl ${titleTone}`}
-      >
-        {title}
-      </h2>
+          {title}
+        </h2>
+      </Reveal>
       {description && (
-        <p className={`mt-5 max-w-2xl text-base leading-relaxed md:text-lg ${descTone} ${align === "center" ? "mx-auto" : ""}`}>
-          {description}
-        </p>
+        <Reveal from="up" delay={0.12}>
+          <p
+            className={`mt-5 max-w-2xl text-base leading-relaxed md:text-lg ${descTone} ${align === "center" ? "mx-auto" : ""}`}
+          >
+            {description}
+          </p>
+        </Reveal>
       )}
     </div>
   );

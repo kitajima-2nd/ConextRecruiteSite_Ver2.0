@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import Reveal from "@/components/motion/Reveal";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
@@ -265,7 +266,7 @@ export default function VoiceSection({ className = "" }: classNameProps) {
         />
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
-          <div>
+          <Reveal from="up" className="min-w-0">
             <div className="relative min-h-64">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -317,17 +318,19 @@ export default function VoiceSection({ className = "" }: classNameProps) {
                 );
               })}
             </div>
-          </div>
+          </Reveal>
 
-          <VoiceCardStrip
-            start={start}
-            direction={direction}
-            sliding={sliding}
-            reduceMotion={reduceMotion}
-            onSlideComplete={onSlideComplete}
-            onPrev={() => beginSlide(-1)}
-            onNext={() => beginSlide(1)}
-          />
+          <Reveal from="down" delay={0.1} className="min-w-0">
+            <VoiceCardStrip
+              start={start}
+              direction={direction}
+              sliding={sliding}
+              reduceMotion={reduceMotion}
+              onSlideComplete={onSlideComplete}
+              onPrev={() => beginSlide(-1)}
+              onNext={() => beginSlide(1)}
+            />
+          </Reveal>
         </div>
       </div>
     </SectionShell>

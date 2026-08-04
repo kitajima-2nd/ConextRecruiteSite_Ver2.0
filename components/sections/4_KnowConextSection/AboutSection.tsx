@@ -1,5 +1,6 @@
 "use client";
 
+import Reveal from "@/components/motion/Reveal";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
@@ -43,7 +44,13 @@ function DescriptionStack() {
       {businessNodes.map((node, index) => {
         const edge = businessEdges[index];
         return (
-          <li key={node.id} className="py-3 first:pt-0 last:pb-0 md:py-3.5">
+          <Reveal
+            key={node.id}
+            as="li"
+            from="up"
+            delay={index * 0.08}
+            className="py-3 first:pt-0 last:pb-0 md:py-3.5"
+          >
             <div className="flex items-baseline gap-3">
               <span className="font-heading text-2xl font-bold leading-none text-brand-blue-soft md:text-3xl">
                 {node.number}
@@ -62,7 +69,7 @@ function DescriptionStack() {
                 )}
               </div>
             </div>
-          </li>
+          </Reveal>
         );
       })}
     </ol>
@@ -180,9 +187,9 @@ export default function AboutSection({ className = "" }: classNameProps) {
           <DescriptionStack />
         </div>
 
-        <div className="min-w-0">
+        <Reveal from="down" delay={0.1} className="min-w-0">
           <CircleDiagram />
-        </div>
+        </Reveal>
       </div>
     </SectionShell>
   );

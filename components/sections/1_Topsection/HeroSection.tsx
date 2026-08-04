@@ -1,14 +1,24 @@
 "use client";
 
-import TopBackgroundSlideshow from "./SpiralHelix/TopBackgroundSlideshow";
+import { useRef } from "react";
+import TopBackgroundSlideshow, {
+  useHeroSpiralActive,
+} from "./SpiralHelix/TopBackgroundSlideshow";
 
 export default function HeroSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const spiralActive = useHeroSpiralActive(sectionRef);
+
   return (
-    <section className="relative h-full w-full overflow-hidden bg-transparent">
+    <section
+      ref={sectionRef}
+      className="relative h-full w-full overflow-hidden bg-transparent"
+    >
       <div className="absolute inset-0 z-10 overflow-hidden">
         <TopBackgroundSlideshow
-          containerClassName="inset-0 h-full w-full opacity-80"
+          containerClassName="inset-0 h-full w-full opacity-100"
           rotationSpeed={0.002}
+          active={spiralActive}
         />
       </div>
 

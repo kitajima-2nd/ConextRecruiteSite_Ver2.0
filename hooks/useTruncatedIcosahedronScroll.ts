@@ -27,6 +27,11 @@ const INITIAL_STATE: TruncatedIcosahedronScrollState = {
   exitOffsetY: 0,
 };
 
+/** useFrame / DOM が毎フレーム参照（React 再レンダーを避ける） */
+export const truncatedIcosahedronScrollRef: {
+  current: TruncatedIcosahedronScrollState;
+} = { current: INITIAL_STATE };
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
@@ -65,12 +70,9 @@ export function getTruncatedIcosahedronTransform(
   let positionX: number;
 
   if (globalProgress < stage1End) {
-    // Hero: 初期のまま
     baseScale = SCALE_HERO;
     positionX = 0;
   } else if (globalProgress < stage2End) {
-    // Hero2 到達: 70%・左。hold 相当までは左固定、その後右へ
-    // 入場直後のごく短い区間で Hero ポーズから到着ポーズへ寄せ、ジャンプ中の飛びを緩和
     const arriveT = smoothstep(0, 0.08, stageProgress);
     baseScale = lerp(SCALE_HERO, SCALE_SIDE, arriveT);
     const xTravel = smoothstep(xMoveStart, 1, stageProgress);
@@ -78,7 +80,6 @@ export function getTruncatedIcosahedronTransform(
     const traveledX = lerp(leftX, OFFSET_X, xTravel);
     positionX = lerp(0, traveledX, arriveT);
   } else {
-    // Hero3: 右で固定
     baseScale = SCALE_SIDE;
     positionX = OFFSET_X;
   }
@@ -93,40 +94,36 @@ export function getTruncatedIcosahedronTransform(
   return { scale, positionX, positionY, toStage2: toHero2, locked };
 }
 
-function isSameScrollState(
+function isSameMountState(
   a: TruncatedIcosahedronScrollState,
   b: TruncatedIcosahedronScrollState
 ) {
-  return (
-    a.stageIndex === b.stageIndex &&
-    a.visible === b.visible &&
-    Math.abs(a.stageProgress - b.stageProgress) < 0.0001 &&
-    Math.abs(a.globalProgress - b.globalProgress) < 0.0001 &&
-    Math.abs(a.exitOffsetY - b.exitOffsetY) < 0.5
-  );
+  return a.stageIndex === b.stageIndex && a.visible === b.visible;
 }
 
+/**
+ * スクロールは ref に毎フレーム書き込み。
+ * React state は stage / visible の変化時のみ（マウント制御用）。
+ */
 export function useTruncatedIcosahedronScroll(
   sectionRefs: RefObject<HTMLElement | null>[]
 ) {
   const [state, setState] =
     useState<TruncatedIcosahedronScrollState>(INITIAL_STATE);
 
-  // page.tsx で毎レンダー新しい配列が渡されても effect を再登録しない
   const sectionRefsRef = useRef(sectionRefs);
   sectionRefsRef.current = sectionRefs;
+  const rafRef = useRef(0);
 
   useEffect(() => {
-    const update = () => {
+    const compute = () => {
       const refs = sectionRefsRef.current;
       const scrollY = window.scrollY;
       const count = refs.length;
       const lastSection = refs[count - 1]?.current;
       const lastRect = lastSection?.getBoundingClientRect();
 
-      // Hero3 が画面から完全に出たら非表示（スクロール同期で消えた後）
       const visible = lastRect ? lastRect.bottom > 0 : true;
-      // sticky 走行分を超えてから背景を一緒に上げる（200dvh sticky 対応）
       const stickyTravel = lastRect
         ? Math.max(0, lastRect.height - window.innerHeight)
         : 0;
@@ -155,19 +152,32 @@ export function useTruncatedIcosahedronScroll(
             visible,
             exitOffsetY,
           };
-          setState((prev) => (isSameScrollState(prev, next) ? prev : next));
+          truncatedIcosahedronScrollRef.current = next;
+
+          setState((prev) =>
+            isSameMountState(prev, next) ? prev : next
+          );
           return;
         }
       }
     };
 
-    update();
+    const update = () => {
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(() => {
+        rafRef.current = 0;
+        compute();
+      });
+    };
+
+    compute();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);
 
     return () => {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 

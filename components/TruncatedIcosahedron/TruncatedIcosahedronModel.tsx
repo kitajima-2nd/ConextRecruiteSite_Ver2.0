@@ -6,19 +6,13 @@ import * as THREE from "three";
 import { getTruncatedIcosahedronData } from "@/lib/geometry/truncatedIcosahedron";
 import {
   getTruncatedIcosahedronTransform,
-  type TruncatedIcosahedronScrollState,
+  truncatedIcosahedronScrollRef,
 } from "@/hooks/useTruncatedIcosahedronScroll";
 
 /** トリコロール外の例外色（コバルトブルー固定） */
 const WIRE_COLOR = "#0047AB";
 
-type TruncatedIcosahedronModelProps = {
-  scrollState: TruncatedIcosahedronScrollState;
-};
-
-export default function TruncatedIcosahedronModel({
-  scrollState,
-}: TruncatedIcosahedronModelProps) {
+export default function TruncatedIcosahedronModel() {
   const groupRef = useRef<THREE.Group>(null);
 
   const { linePositions } = useMemo(() => getTruncatedIcosahedronData(), []);
@@ -36,6 +30,7 @@ export default function TruncatedIcosahedronModel({
     const group = groupRef.current;
     if (!group) return;
 
+    const scrollState = truncatedIcosahedronScrollRef.current;
     const time = state.clock.elapsedTime;
     const { scale, positionX, positionY, locked } =
       getTruncatedIcosahedronTransform(

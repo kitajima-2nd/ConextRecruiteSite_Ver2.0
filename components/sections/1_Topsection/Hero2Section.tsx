@@ -1,12 +1,15 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
-import { useStickyScrollProgress } from "@/hooks/useStickyScrollProgress";
 import {
   lerp,
   smoothstep,
 } from "@/hooks/useTruncatedIcosahedronScroll";
+import {
+  animateScrollTo,
+  isScrollAnimating,
+} from "@/lib/scroll/animateScrollTo";
 
 /** 拡大開始スケール（中央の小さな青面） */
 const SCALE_FROM = 0.12;
@@ -15,85 +18,133 @@ export const HERO2_GROW_END = 0.5;
 /** 自動スクロール発火（grow の約 20%） */
 const AUTO_TRIGGER = 0.1;
 
+function readProgress(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+  const scrollY = window.scrollY;
+  const top = scrollY + rect.top;
+  const range = Math.max(rect.height - window.innerHeight, 1);
+  return Math.min(1, Math.max(0, (scrollY - top) / range));
+}
+
 export default function Hero2Section() {
   const trackRef = useRef<HTMLElement>(null);
-  const progress = useStickyScrollProgress(trackRef);
+  const blueRef = useRef<HTMLDivElement>(null);
   const lockingRef = useRef(false);
   const armedRef = useRef(true);
   const lastProgressRef = useRef(0);
+  const readyRef = useRef(false);
+  const rafRef = useRef(0);
+  const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTextVisible(true);
+      if (blueRef.current) {
+        blueRef.current.style.transform = "scale(1)";
+      }
       return;
     }
 
-    const el = trackRef.current;
-    if (!el) return;
+    const apply = () => {
+      rafRef.current = 0;
+      const el = trackRef.current;
+      const blue = blueRef.current;
+      if (!el || !blue) return;
 
-    const prev = lastProgressRef.current;
-    lastProgressRef.current = progress;
-    const scrollingDown = progress > prev;
+      const progress = readProgress(el);
+      const growT = smoothstep(0, HERO2_GROW_END, progress);
+      const scale = lerp(SCALE_FROM, 1, growT);
+      blue.style.transform = `scale(${scale})`;
 
-    if (progress < AUTO_TRIGGER) {
-      armedRef.current = true;
-      lockingRef.current = false;
-      return;
-    }
+      const showText = progress >= HERO2_GROW_END;
+      setTextVisible((prev) => (prev === showText ? prev : showText));
 
-    if (progress >= HERO2_GROW_END) {
-      lockingRef.current = false;
-      return;
-    }
+      if (!readyRef.current) {
+        readyRef.current = true;
+        lastProgressRef.current = progress;
+        if (progress >= AUTO_TRIGGER) armedRef.current = false;
+        return;
+      }
 
-    if (
-      !lockingRef.current &&
-      armedRef.current &&
-      scrollingDown &&
-      progress >= AUTO_TRIGGER &&
-      progress < HERO2_GROW_END
-    ) {
-      lockingRef.current = true;
-      armedRef.current = false;
+      const prev = lastProgressRef.current;
+      lastProgressRef.current = progress;
+      const scrollingDown = progress > prev;
 
-      const rect = el.getBoundingClientRect();
-      const sectionTop = window.scrollY + rect.top;
-      const pinRange = Math.max(rect.height - window.innerHeight, 1);
-      const targetY = sectionTop + HERO2_GROW_END * pinRange;
+      if (progress < AUTO_TRIGGER) {
+        armedRef.current = true;
+        lockingRef.current = false;
+        return;
+      }
+      if (progress >= HERO2_GROW_END) {
+        lockingRef.current = false;
+        return;
+      }
 
-      window.scrollTo({ top: targetY, behavior: "smooth" });
-    }
-  }, [progress]);
+      if (
+        !lockingRef.current &&
+        armedRef.current &&
+        scrollingDown &&
+        progress >= AUTO_TRIGGER &&
+        progress < HERO2_GROW_END &&
+        !isScrollAnimating()
+      ) {
+        lockingRef.current = true;
+        armedRef.current = false;
+        const rect = el.getBoundingClientRect();
+        const sectionTop = window.scrollY + rect.top;
+        const pinRange = Math.max(rect.height - window.innerHeight, 1);
+        const targetY = sectionTop + HERO2_GROW_END * pinRange;
+        void animateScrollTo(targetY, { durationMs: 550 });
+      }
+    };
 
-  const growT = smoothstep(0, HERO2_GROW_END, progress);
-  const scale = lerp(SCALE_FROM, 1, growT);
-  const textVisible = progress >= HERO2_GROW_END;
+    const onScroll = () => {
+      if (rafRef.current) return;
+      rafRef.current = requestAnimationFrame(apply);
+    };
+
+    apply();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   return (
     <section
       ref={trackRef}
       className="relative h-[300dvh] w-full bg-transparent"
     >
-      {/* sticky 自体は透明（拡大前に全面が青にならない） */}
+      {/*
+        重ね順:
+        1) 侍ブルー（sticky・z なし）→ fixed 切頂(z-5)の下
+        2) 切頂 WebGL（TopSection 側 z-5）
+        3) コピー（sticky z-10）→ 切頂の上
+      */}
       <div className="sticky top-0 h-dvh w-full overflow-hidden">
         <div
-          className="absolute inset-0 bg-brand-blue will-change-transform"
+          ref={blueRef}
+          className="absolute inset-0 opacity-100"
           style={{
-            transform: `scale(${scale})`,
+            transform: `scale(${SCALE_FROM})`,
             transformOrigin: "center bottom",
+            backgroundColor: "var(--brand-blue)",
           }}
           aria-hidden
         />
+      </div>
 
+      <div className="pointer-events-none sticky top-0 z-10 -mt-[100dvh] h-dvh w-full">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={
             textVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }
           }
           transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-          className="relative z-10 flex h-full w-full items-center px-6 text-white md:px-10 lg:px-16"
+          className="pointer-events-auto flex h-full w-full items-center px-6 text-white md:px-10 lg:px-16"
         >
           <div className="section-inner grid w-full grid-cols-1 md:grid-cols-2">
             <div className="w-full max-w-xl text-left md:col-start-2">

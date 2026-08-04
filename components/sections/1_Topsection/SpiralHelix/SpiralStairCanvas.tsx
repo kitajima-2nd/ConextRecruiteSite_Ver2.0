@@ -1,9 +1,14 @@
-"use client";
+﻿"use client";
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { companyData } from "@/library/GlobalDateConfig";
 import SpiralHelix from "./SpiralHelix";
+import {
+  getMobileAwareDpr,
+  getMobileAwareGl,
+  isCoarsePointerDevice,
+} from "@/lib/webgl/mobileGl";
 
 type SpiralStairCanvasProps = {
   containerClassName?: string;
@@ -15,12 +20,15 @@ export default function SpiralStairCanvas({
   rotationSpeed = 0.002,
 }: SpiralStairCanvasProps) {
   const images = companyData.heroSlideshow?.images ?? [];
+  const mobile = isCoarsePointerDevice();
 
   if (images.length === 0) return null;
 
-  // 螺旋の密度を確保（参考サイトは13枚前後）
-  const panelImages =
-    images.length >= 10
+  const panelImages = mobile
+    ? Array.from({ length: Math.min(8, Math.max(images.length, 6)) }, (_, i) =>
+        images[i % images.length]
+      )
+    : images.length >= 10
       ? images
       : Array.from({ length: 12 }, (_, i) => images[i % images.length]);
 
@@ -33,12 +41,8 @@ export default function SpiralStairCanvas({
           near: 0.1,
           far: 100,
         }}
-        dpr={[1, 2]}
-        gl={{
-          alpha: true,
-          antialias: true,
-          powerPreference: "high-performance",
-        }}
+        dpr={getMobileAwareDpr()}
+        gl={getMobileAwareGl()}
         style={{ background: "transparent" }}
       >
         <Suspense fallback={null}>

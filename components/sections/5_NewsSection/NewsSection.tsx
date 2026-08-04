@@ -1,5 +1,6 @@
 "use client";
 
+import Reveal from "@/components/motion/Reveal";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
 import { newsItems } from "@/components/sections/5_NewsSection/newsData";
@@ -16,7 +17,7 @@ export default function NewsSection() {
       />
 
       <ul className="m-0 list-none border-t border-brand-blue-soft p-0">
-        {newsItems.map((item) => {
+        {newsItems.map((item, index) => {
           const content = (
             <>
               <time
@@ -40,7 +41,7 @@ export default function NewsSection() {
           );
 
           return (
-            <li key={item.id}>
+            <Reveal key={item.id} as="li" from="up" delay={index * 0.06}>
               {item.href ? (
                 <a href={item.href} className="news-row no-underline">
                   {content}
@@ -50,7 +51,7 @@ export default function NewsSection() {
                   {content}
                 </div>
               )}
-            </li>
+            </Reveal>
           );
         })}
       </ul>

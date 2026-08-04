@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import Reveal from "@/components/motion/Reveal";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
@@ -41,31 +40,16 @@ type ValueTileProps = {
   index: number;
   featured?: boolean;
   delay: number;
-  active: boolean;
-  reduceMotion: boolean | null;
 };
 
-function ValueTile({
-  value,
-  index,
-  featured = false,
-  delay,
-  active,
-  reduceMotion,
-}: ValueTileProps) {
+function ValueTile({ value, index, featured = false, delay }: ValueTileProps) {
   const number = String(index + 1).padStart(2, "0");
-  const duration = reduceMotion ? 0.01 : 0.55;
-  const show = active || !!reduceMotion;
 
   return (
-    <motion.article
-      initial={false}
-      animate={
-        show
-          ? { opacity: 1, y: 0 }
-          : { opacity: 0, y: reduceMotion ? 0 : 18 }
-      }
-      transition={{ duration, delay: reduceMotion ? 0 : delay, ease: "easeOut" }}
+    <Reveal
+      as="article"
+      from="up"
+      delay={delay}
       className={`group relative overflow-hidden rounded-2xl bg-linear-to-br from-brand-blue-wash to-white px-6 py-7 pl-7 transition-colors duration-300 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-brand-blue-soft before:transition-colors before:duration-300 hover:before:bg-brand-blue-mid md:px-8 md:py-8 md:pl-8 ${
         featured ? "md:min-h-56 lg:col-span-2" : ""
       }`}
@@ -82,64 +66,29 @@ function ValueTile({
       </span>
 
       <div className={`relative ${featured ? "max-w-xl" : ""}`}>
-        <motion.p
-          initial={false}
-          animate={{ opacity: show ? 1 : 0 }}
-          transition={{
-            duration,
-            delay: reduceMotion ? 0 : delay + 0.08,
-            ease: "easeOut",
-          }}
-          className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-brand-blue-mid"
-        >
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-brand-blue-mid">
           {value.title}
-        </motion.p>
-        <motion.h3
-          initial={false}
-          animate={
-            show
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: reduceMotion ? 0 : 8 }
-          }
-          transition={{
-            duration,
-            delay: reduceMotion ? 0 : delay + 0.14,
-            ease: "easeOut",
-          }}
+        </p>
+        <h3
           className={`mb-3 font-bold text-neutral-900 ${
             featured ? "text-2xl md:text-3xl" : "text-xl md:text-2xl"
           }`}
         >
           {value.label}
-        </motion.h3>
-        <motion.p
-          initial={false}
-          animate={
-            show
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: reduceMotion ? 0 : 8 }
-          }
-          transition={{
-            duration,
-            delay: reduceMotion ? 0 : delay + 0.2,
-            ease: "easeOut",
-          }}
+        </h3>
+        <p
           className={`leading-relaxed text-neutral-600 transition-colors duration-300 group-hover:text-neutral-800 ${
             featured ? "text-sm md:text-base" : "text-sm"
           }`}
         >
           {value.description}
-        </motion.p>
+        </p>
       </div>
-    </motion.article>
+    </Reveal>
   );
 }
 
 export default function ConextfiveValueSection({ className = "" }: classNameProps) {
-  const gridRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(gridRef, { once: true, amount: 0.2 });
-  const reduceMotion = useReducedMotion();
-
   return (
     <SectionShell
       id="service"
@@ -161,12 +110,11 @@ export default function ConextfiveValueSection({ className = "" }: classNameProp
         description="サッカーで培った強みを、ビジネスの現場でも活かすための行動指針です。"
         className="mb-3 max-w-2xl"
       />
-      <div className="rule-sky mb-10" aria-hidden />
+      <Reveal from="up" delay={0.08}>
+        <div className="rule-sky mb-10" aria-hidden />
+      </Reveal>
 
-      <div
-        ref={gridRef}
-        className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3"
-      >
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
         {values.map((value, index) => (
           <ValueTile
             key={value.title}
@@ -174,8 +122,6 @@ export default function ConextfiveValueSection({ className = "" }: classNameProp
             index={index}
             featured={index === 0}
             delay={index * 0.08}
-            active={inView}
-            reduceMotion={reduceMotion}
           />
         ))}
       </div>
