@@ -8,7 +8,7 @@ type SectionShellProps = {
   id?: string;
   className?: string;
   innerClassName?: string;
-  variant?: "light" | "muted" | "dark" | "transparent";
+  variant?: "light" | "muted" | "dark" | "brand" | "transparent";
   as?: "section" | "div";
   animated?: boolean;
 };
@@ -17,6 +17,7 @@ const variantClasses: Record<NonNullable<SectionShellProps["variant"]>, string> 
   light: "bg-white text-neutral-900",
   muted: "bg-brand-blue-wash text-neutral-900",
   dark: "bg-white text-neutral-900",
+  brand: "bg-brand-blue",
   transparent: "bg-transparent",
 };
 

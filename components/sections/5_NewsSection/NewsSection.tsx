@@ -33,7 +33,7 @@ export default function NewsSection() {
                 <p className="text-base font-medium leading-snug text-neutral-900 md:text-lg">
                   {item.title}
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+                <p className="mt-2 text-sm leading-relaxed text-neutral-600 md:text-base">
                   {item.summary}
                 </p>
               </div>

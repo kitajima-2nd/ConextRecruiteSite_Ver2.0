@@ -1,195 +1,177 @@
 "use client";
 
-import Reveal from "@/components/motion/Reveal";
+/**
+ * AboutSection（事業内容 / Project）
+ *
+ * 固定見出し + スクロール連動で左テキスト／右写真を切替。
+ * トラック 600dvh（1事業 200dvh × 3）、sticky でビューポートにピン留め。
+ */
+
+import { useRef } from "react";
+import Image from "next/image";
 import { classNameProps } from "@/library/GlobalDateConfig";
 import SectionShell from "@/components/layout/SectionShell";
 import SectionHeading from "@/components/layout/SectionHeading";
+import { useStickyScrollProgress } from "@/hooks/useStickyScrollProgress";
 import {
   businessEdges,
   businessNodes,
   cycleIntro,
-  type BusinessNode,
 } from "@/components/sections/4_KnowConextSection/aboutBusiness";
 
-const CARD_WIDTH_CLASS = "w-[34%] sm:w-[32%]";
+const NODE_COUNT = businessNodes.length;
 
-function BusinessCard({ node }: { node: BusinessNode }) {
-  return (
-    <article className="group relative overflow-hidden rounded-xl bg-linear-to-br from-brand-blue-wash to-white px-3 py-3 pl-4 shadow-sm before:absolute before:inset-y-2.5 before:left-0 before:w-0.5 before:rounded-full before:bg-brand-blue-soft before:transition-colors before:duration-300 hover:before:bg-brand-blue-mid md:px-4 md:py-3.5 md:pl-5">
-      <div className="relative">
-        <p className="mb-1 text-[0.6rem] font-medium tracking-[0.18em] text-brand-blue-mid">
-          ( {node.eyebrow} )
-        </p>
-        <h3 className="mb-2 text-sm font-bold leading-snug text-neutral-900 md:text-base">
-          {node.title}
-        </h3>
-        <ul className="m-0 flex list-none flex-wrap gap-1 p-0">
-          {node.tags.map((tag) => (
-            <li
-              key={tag}
-              className="rounded-full border border-brand-blue-soft bg-white/90 px-1.5 py-0.5 text-[0.55rem] font-medium tracking-wide text-brand-blue-mid"
-            >
-              {tag}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
+/** 三角配置オフセット: 左上 / 右 / 下（角〜辺だけ重なる程度） */
+const PHOTO_PLACEMENTS = [
+  { x: "-32%", y: "-24%" },
+  { x: "30%", y: "-6%" },
+  { x: "-6%", y: "28%" },
+] as const;
+
+function getActiveIndex(progress: number) {
+  return Math.min(NODE_COUNT - 1, Math.floor(progress * NODE_COUNT));
 }
 
-function DescriptionStack() {
+/**
+ * 左カラム: アクティブ事業の番号・タイトル・説明・タグ・接続ラベル。
+ * 全ノードを重ね、active のみ表示（クロスフェード）。
+ */
+function BusinessCopy({ activeIndex }: { activeIndex: number }) {
   return (
-    <ol className="m-0 flex list-none flex-col divide-y divide-brand-blue-soft p-0">
+    <div className="relative min-h-52 md:min-h-64">
       {businessNodes.map((node, index) => {
         const edge = businessEdges[index];
+        const isActive = index === activeIndex;
         return (
-          <Reveal
-            key={node.id}
-            as="li"
-            from="up"
-            delay={index * 0.08}
-            className="py-3 first:pt-0 last:pb-0 md:py-3.5"
-          >
-            <div className="flex items-baseline gap-3">
-              <span className="font-heading text-2xl font-bold leading-none text-brand-blue-soft md:text-3xl">
-                {node.number}
-              </span>
-              <div className="min-w-0 flex-1">
-                <h3 className="mb-1 text-sm font-bold text-neutral-900 md:text-base">
-                  {node.title}
-                </h3>
-                <p className="text-xs leading-relaxed text-neutral-600 md:text-[0.8125rem]">
-                  {node.description}
-                </p>
-                {edge && (
-                  <p className="mt-1.5 text-[0.65rem] font-medium tracking-wide text-brand-blue-mid">
-                    → {edge.label}
-                  </p>
-                )}
-              </div>
-            </div>
-          </Reveal>
-        );
-      })}
-    </ol>
-  );
-}
-
-function CircleDiagram() {
-  const placements = [
-    { node: businessNodes[0], deg: 0 },
-    { node: businessNodes[1], deg: 120 },
-    { node: businessNodes[2], deg: 240 },
-  ] as const;
-
-  return (
-    <div className="mx-auto w-full max-w-md pt-16 sm:pt-20 lg:max-w-xl lg:pt-0">
-      <div className="relative aspect-square w-full">
-        <div className="about-ring-spin pointer-events-none absolute inset-[6%]">
-          <div className="about-ring-breathe h-full w-full text-brand-blue-mid/50">
-            <svg
-              className="h-full w-full"
-              viewBox="0 0 100 100"
-              preserveAspectRatio="xMidYMid meet"
-              aria-hidden
-            >
-              <circle
-                cx="50"
-                cy="50"
-                r="42"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="0.9"
-                strokeDasharray="2.2 1.6"
-              />
-              <circle
-                cx="50"
-                cy="50"
-                r="34"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="0.4"
-                strokeDasharray="1.4 1.2"
-                opacity="0.5"
-              />
-              <path
-                d="M50 8 A42 42 0 0 1 86 71"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="0.55"
-                strokeDasharray="1.8 1.4"
-                opacity="0.55"
-                markerEnd="url(#cycle-arrow)"
-              />
-              <defs>
-                <marker
-                  id="cycle-arrow"
-                  markerWidth="4"
-                  markerHeight="4"
-                  refX="3"
-                  refY="2"
-                  orient="auto"
-                >
-                  <path d="M0 0 L4 2 L0 4 Z" fill="currentColor" />
-                </marker>
-              </defs>
-            </svg>
-          </div>
-        </div>
-
-        <p className="pointer-events-none absolute left-1/2 top-1/2 z-0 -translate-x-1/2 -translate-y-1/2 text-center text-[0.65rem] font-medium tracking-[0.28em] text-brand-blue-mid">
-          CYCLE
-          <br />
-          CONEXT
-        </p>
-
-        {/* 親サイズ基準で円周配置（translate% は要素自身基準のため使わない） */}
-        {placements.map(({ node, deg }) => (
           <div
             key={node.id}
-            className="pointer-events-none absolute inset-0"
-            style={{ transform: `rotate(${deg}deg)` }}
+            className="absolute inset-x-0 top-0 transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none"
+            style={{
+              opacity: isActive ? 1 : 0,
+              transform: isActive ? "translateY(0)" : "translateY(0.5rem)",
+              pointerEvents: isActive ? "auto" : "none",
+            }}
+            aria-hidden={!isActive}
           >
-            <div
-              className={`pointer-events-auto absolute top-[18%] left-1/2 z-10 lg:top-[10%] ${CARD_WIDTH_CLASS}`}
-              style={{
-                transform: `translate(-50%, -50%) rotate(${-deg}deg)`,
-              }}
-            >
-              <BusinessCard node={node} />
+            <div className="flex flex-col gap-2">
+              <div className="flex items-baseline gap-3">
+                <span className="font-heading shrink-0 text-4xl font-bold leading-none text-brand-blue-soft md:text-6xl lg:text-7xl">
+                  {node.number}
+                </span>
+                <h3 className="min-w-0 text-xl font-bold leading-tight text-neutral-900 md:text-3xl lg:text-4xl">
+                  {node.title}
+                </h3>
+              </div>
+              <p className="mb-1 text-sm leading-relaxed text-neutral-600 md:text-base">
+                {node.description}
+              </p>
+              <ul className="m-0 mb-2 flex list-none flex-wrap gap-1 p-0">
+                {node.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full border border-brand-blue-soft bg-white/90 px-1.5 py-0.5 text-[0.55rem] font-medium tracking-wide text-brand-blue-mid"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+              {edge && (
+                <p className="text-xs font-medium tracking-wide text-brand-blue-mid md:text-sm">
+                  → {edge.label}
+                </p>
+              )}
             </div>
           </div>
-        ))}
-      </div>
+        );
+      })}
     </div>
   );
 }
 
+/**
+ * 右カラム: 3枚を左上 / 右 / 下へ広げた三角スタック。
+ * active が前面・不透明、それ以外は薄く背面へ。左テキストへのはみ出し可。
+ */
+function BusinessPhotoStack({ activeIndex }: { activeIndex: number }) {
+  return (
+    <div className="relative mx-auto aspect-[5/4] w-full max-w-lg sm:aspect-[4/3] sm:max-w-md lg:max-w-none">
+      {/* 正六角形バックドロップ: 3枚写真の中心に配置、切替ごとに120°回転 */}
+      <div
+        aria-hidden
+        className="clip-hexagon pointer-events-none absolute top-1/2 left-1/2 z-0 w-[123%] bg-brand-blue/70 transition-transform duration-700 ease-out motion-reduce:transition-none"
+        style={{
+          aspectRatio: "1 / 0.866",
+          transform: `translate(-50%, -50%) rotate(${activeIndex * 120}deg)`,
+        }}
+      />
+      {businessNodes.map((node, index) => {
+        const isActive = index === activeIndex;
+        const { x, y } = PHOTO_PLACEMENTS[index];
+        return (
+          <div
+            key={node.id}
+            className="absolute top-1/2 left-1/2 h-[80%] w-[66%] overflow-hidden rounded-lg shadow-md transition-[opacity,transform] duration-500 ease-out motion-reduce:transition-none lg:h-[72%] lg:w-[56%]"
+            style={{
+              transform: `translate(calc(-50% + ${x}), calc(-50% + ${y})) scale(${isActive ? 1.04 : 0.96})`,
+              opacity: isActive ? 1 : 0.35,
+              zIndex: isActive ? 30 : 10 + index,
+            }}
+          >
+            <Image
+              src={node.imageSrc}
+              alt={node.imageAlt}
+              fill
+              sizes="(max-width: 1024px) 70vw, 40vw"
+              className="object-cover"
+              priority={index === 0}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * 事業内容セクション本体。
+ * sticky ピン中に progress で activeIndex を進め、左コピーと右写真のみ切替。
+ */
 export default function AboutSection({ className = "" }: classNameProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const progress = useStickyScrollProgress(trackRef);
+  const activeIndex = getActiveIndex(progress);
+
   return (
     <SectionShell
       id="project"
       variant="muted"
       animated={false}
-      className={`flex items-center py-6! md:py-8! lg:h-dvh lg:overflow-hidden lg:py-5! ${className}`}
-      innerClassName="w-full"
+      as="div"
+      className={`py-0! ${className}`}
+      innerClassName="w-full! max-w-none! px-0!"
     >
-      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-10">
-        <div className="min-w-0">
-          <SectionHeading
-            align="left"
-            eyebrow="Project"
-            title="事業内容"
-            description={cycleIntro}
-            className="mb-10 max-w-2xl"
-          />
-          <DescriptionStack />
-        </div>
+      <div ref={trackRef} className="relative h-[600dvh] w-full">
+        {/* モバイルは上寄せ + Know Conext の固定見出し分だけ下げて重なりを回避 */}
+        <div className="sticky top-0 flex h-dvh w-full items-start overflow-visible md:items-center">
+          <div className="section-inner grid w-full grid-cols-1 items-center gap-8 pt-[calc(var(--header-height)+1rem+5rem)] pb-8 md:gap-10 md:py-[calc(var(--header-height)+1rem)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] lg:gap-12 lg:py-8">
+            {/* 左: 固定見出し + 切替コピー（写真より前面で可読性を確保） */}
+            <div className="relative z-20 min-w-0">
+              <SectionHeading
+                align="left"
+                eyebrow="Project"
+                title="Conext 3つの軸"
+                size="display"
+                className="mb-8 max-w-2xl md:mb-10"
+              />
+              <BusinessCopy activeIndex={activeIndex} />
+            </div>
 
-        <Reveal from="down" delay={0.1} className="min-w-0">
-          <CircleDiagram />
-        </Reveal>
+            {/* 右: 三角配置写真（左へはみ出してテキストと重なってよい） */}
+            <div className="relative z-10 min-w-0 lg:-ml-[18%] lg:w-[118%]">
+              <BusinessPhotoStack activeIndex={activeIndex} />
+            </div>
+          </div>
+        </div>
       </div>
     </SectionShell>
   );

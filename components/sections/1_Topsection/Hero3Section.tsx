@@ -23,7 +23,7 @@ function Hero3Content() {
             <p className="mb-4 text-xs font-medium tracking-[0.2em] text-brand-blue-mid">
               ( Concept )
             </p>
-            <h2 className="font-heading mb-6 text-3xl leading-[1.05] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
+            <h2 className="font-heading mb-6 text-4xl leading-[1.05] tracking-tight text-brand-blue md:text-5xl lg:text-6xl">
               サッカー人のポテンシャルを
               <br />
               最大限に解き放つ

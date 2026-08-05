@@ -18,12 +18,13 @@ export default function RecruitSection() {
             <span className="text-neutral-500">採用情報</span>
           </>
         }
+        size="display"
         className="mb-12 max-w-2xl"
       />
 
       <div className="max-w-3xl">
         <Reveal from="up">
-          <p className="mb-8 font-heading text-2xl leading-snug tracking-tight text-brand-blue md:text-3xl">
+          <p className="mb-8 font-heading text-3xl leading-[1.1] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
             一緒にサッカーで
             <br />
             「日本一」を目指しませんか？

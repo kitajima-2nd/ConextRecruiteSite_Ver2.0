@@ -151,7 +151,7 @@ export default function Hero2Section() {
               <p className="mb-5 text-xs font-medium tracking-[0.2em] text-white/80 md:mb-6">
                 ( Mission )
               </p>
-              <h2 className="font-heading mb-4 text-3xl leading-[1.05] tracking-tight text-white md:text-4xl lg:text-5xl">
+              <h2 className="font-heading mb-4 text-4xl leading-[1.05] tracking-tight text-white md:text-5xl lg:text-6xl">
                 サッカーの経験を、
                 <br />
                 仕事の力に。

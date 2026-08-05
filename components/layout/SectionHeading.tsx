@@ -8,8 +8,15 @@ type SectionHeadingProps = {
   description?: React.ReactNode;
   align?: "left" | "center";
   tone?: "light" | "dark";
+  /** default: 節タイトル / display: 見せ場用の一段大きい見出し */
+  size?: "default" | "display";
   className?: string;
 };
+
+const titleSizeClass = {
+  default: "text-5xl md:text-6xl lg:text-7xl",
+  display: "text-6xl md:text-7xl lg:text-8xl",
+} as const;
 
 function formatEyebrow(label: string) {
   const trimmed = label.trim();
@@ -22,13 +29,15 @@ export default function SectionHeading({
   title,
   description,
   align = "center",
-  tone: _tone = "dark",
+  tone = "dark",
+  size = "default",
   className = "",
 }: SectionHeadingProps) {
   const alignClass = align === "center" ? "text-center mx-auto" : "text-left";
-  const titleTone = "text-neutral-900";
-  const descTone = "text-neutral-600";
-  const eyebrowTone = "text-brand-blue-mid";
+  const isLight = tone === "light";
+  const titleTone = isLight ? "text-white" : "text-neutral-900";
+  const descTone = isLight ? "text-white/80" : "text-neutral-600";
+  const eyebrowTone = isLight ? "text-white/70" : "text-brand-blue-mid";
   const headingFrom = align === "left" ? "left" : "right";
 
   return (
@@ -42,7 +51,7 @@ export default function SectionHeading({
           </p>
         )}
         <h2
-          className={`font-heading text-4xl leading-[1.05] tracking-tight md:text-5xl lg:text-6xl ${titleTone}`}
+          className={`font-heading leading-[1.05] tracking-tight ${titleSizeClass[size]} ${titleTone}`}
         >
           {title}
         </h2>

@@ -96,6 +96,14 @@ section {
     padding-inline: 1rem;
   }
 
+  /* スマホは表示領域を画面幅の95%まで使う */
+  @media (max-width: 767px) {
+    .section-inner {
+      width: 95%;
+      padding-inline: 0;
+    }
+  }
+
   .section-eyebrow {
     font-variant: normal;
     text-transform: none;
@@ -154,7 +162,8 @@ section {
   }
 
   .site-marquee__track span {
-    font-size: 0.75rem;
+    font-size: 1.125rem;
+    font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
@@ -172,35 +181,6 @@ section {
     .site-marquee__track {
       animation: none;
     }
-
-    .about-ring-spin,
-    .about-ring-breathe {
-      animation: none;
-    }
-  }
-
-  @keyframes about-ring-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes about-ring-breathe {
-    0%,
-    100% {
-      transform: scale(0.97);
-    }
-    50% {
-      transform: scale(1.03);
-    }
-  }
-
-  .about-ring-spin {
-    animation: about-ring-spin 48s linear infinite;
-  }
-
-  .about-ring-breathe {
-    animation: about-ring-breathe 7s ease-in-out infinite;
   }
 
   /* 3Dパースペクティブ効果 */
