@@ -1,3 +1,5 @@
+import type { WebGLRendererParameters } from "three";
+
 /** タッチ／粗いポインタ端末向けの WebGL・スクロール設定 */
 export function isCoarsePointerDevice(): boolean {
   if (typeof window === "undefined") return false;
@@ -11,7 +13,9 @@ export function getMobileAwareDpr(): number | [number, number] {
   return isCoarsePointerDevice() ? 1 : [1, 2];
 }
 
-export function getMobileAwareGl(extra: Record<string, unknown> = {}) {
+export function getMobileAwareGl(
+  extra: Partial<WebGLRendererParameters> = {}
+): Partial<WebGLRendererParameters> {
   const mobile = isCoarsePointerDevice();
   return {
     alpha: true,
