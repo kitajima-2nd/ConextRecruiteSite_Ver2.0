@@ -105,33 +105,33 @@ export default function ConextfiveValueSection({ className = "" }: classNameProp
         </div>
       </div>
 
-      {/* 通常フロー: 01〜05（各 100dvh、見出しの背後を抜けていく） */}
+      {/* 通常フロー: 01〜05（各ブロック、見出しの背後を抜けていく） */}
       <div className="relative z-10 -mt-[100dvh]">
         {values.map((value, index) => (
           <div
             key={value.title}
-            className="flex h-dvh w-full items-end pb-[8dvh]"
+            className="flex h-[68dvh] w-full items-end pb-[2dvh] md:h-[85dvh]"
           >
             <div className="section-inner w-full">
-              <div className="relative h-[58dvh] w-full overflow-hidden rounded-2xl">
+              <div className="relative h-[58dvh] w-full overflow-hidden rounded-2xl md:h-[78dvh]">
                 <Image
                   src={value.imageSrc}
                   alt={value.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, min(100vw - 2rem, 72rem)"
-                  className="object-cover"
+                  className="object-cover opacity-90"
                   priority={index === 0}
                 />
 
-                <div className="pointer-events-none absolute inset-0 bg-linear-to-bl from-brand-blue/80 via-brand-blue/25 to-transparent" />
-                <div className="absolute top-4 right-4 z-10 max-w-[min(100%,18rem)] text-right sm:top-6 sm:right-6 sm:max-w-xs md:top-8 md:right-8 md:max-w-sm">
+                <div className="pointer-events-none absolute inset-0 bg-linear-to-tl from-brand-blue/80 via-brand-blue/25 to-transparent" />
+                <div className="absolute right-4 bottom-4 z-10 max-w-[min(100%,28rem)] text-right sm:right-6 sm:bottom-6 sm:max-w-md md:right-8 md:bottom-8 md:max-w-2xl">
                   <p className="font-heading text-5xl font-bold leading-none text-white/90 md:text-7xl lg:text-8xl">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/70 md:mt-3 md:text-sm">
+                  <p className="mt-2 text-2xl font-semibold uppercase tracking-[0.28em] text-white/70 md:mt-3 md:text-3xl">
                     {value.title}
                   </p>
-                  <h3 className="mt-1 font-heading text-2xl font-bold leading-tight text-white md:text-3xl lg:text-4xl">
+                  <h3 className="mt-1 font-heading text-6xl font-bold leading-tight text-white md:text-7xl lg:text-[6.75rem]">
                     {value.label}
                   </h3>
                   <p className="mt-2 text-xs leading-relaxed text-white/85 sm:text-sm md:mt-3 md:text-base">

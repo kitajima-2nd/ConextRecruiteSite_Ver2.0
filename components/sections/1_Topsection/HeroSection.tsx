@@ -43,13 +43,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-10 z-30 flex flex-col items-center gap-3">
-        <a
-          href="#recruit"
-          className="pointer-events-auto inline-flex items-center rounded-full bg-brand-red px-6 py-3 text-xs font-bold uppercase tracking-[0.18em] text-white transition hover:bg-brand-red-deep"
-        >
-          ENTRY NOW!!
-        </a>
+      <div className="pointer-events-none absolute inset-x-0 bottom-24 z-30 flex flex-col items-center gap-3">
         <div className="flex items-center gap-3 text-neutral-400">
           <span className="text-xs uppercase tracking-[0.24em]">Scroll</span>
           <svg

@@ -8,7 +8,7 @@ import {
   HERO_SLOW_END_VH,
   useHeroScrollPhases,
 } from "@/hooks/useHeroScrollPhases";
-import { animateScrollTo } from "@/lib/scroll/animateScrollTo";
+import { animateScrollTo, isScrollAnimating } from "@/lib/scroll/animateScrollTo";
 import HeroSection from "./HeroSection";
 import Hero2Section, { HERO2_GROW_END } from "./Hero2Section";
 import Hero3Section from "./Hero3Section";
@@ -79,7 +79,8 @@ export default function TopSection() {
         !jumpLockRef.current &&
         jumpArmedRef.current &&
         scrollingDown &&
-        localY >= slowEnd
+        localY >= slowEnd &&
+        !isScrollAnimating()
       ) {
         jumpLockRef.current = true;
         jumpArmedRef.current = false;

@@ -13,16 +13,14 @@ export default function RecruitSection() {
         eyebrow="Recruit"
         title={
           <>
-            Recruit
-            <br />
-            <span className="text-neutral-500">採用情報</span>
+            RECRUIT
           </>
         }
         size="display"
         className="mb-12 max-w-2xl"
       />
 
-      <div className="max-w-3xl">
+      <div className="mx-auto max-w-3xl text-center">
         <Reveal from="up">
           <p className="mb-8 font-heading text-3xl leading-[1.1] tracking-tight text-brand-blue md:text-4xl lg:text-5xl">
             一緒にサッカーで
@@ -46,7 +44,7 @@ export default function RecruitSection() {
         </Reveal>
 
         <Reveal from="up" delay={0.14}>
-          <div className="mb-16 flex flex-col items-start gap-4 sm:flex-row">
+          <div className="mb-16 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               id="entry"
               href={companyData.recruitment?.email ? `mailto:${companyData.recruitment.email}` : "#"}
@@ -65,11 +63,11 @@ export default function RecruitSection() {
       </div>
 
       <Reveal from="up" delay={0.1}>
-        <div className="border-t border-brand-blue-soft pt-12">
+        <div className="border-t border-brand-blue-soft pt-12 text-center">
           <p className="mb-8 text-xs font-medium tracking-[0.2em] text-brand-blue-mid">
             ( Positions )
           </p>
-          <div className="grid grid-cols-1 gap-0 md:grid-cols-2 md:gap-8">
+          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-0 md:grid-cols-2 md:gap-8">
             <article className="border-b border-brand-blue-soft py-8 md:border-b-0 md:border-r md:border-brand-blue-soft md:pr-10">
               <h4 className="mb-4 text-lg font-bold text-brand-blue">正社員</h4>
               <p className="mb-5 text-sm leading-relaxed text-neutral-600 md:text-base">

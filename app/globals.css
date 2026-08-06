@@ -183,6 +183,42 @@ section {
     }
   }
 
+  /* Voice セクション: 縦長ポートレート無限マーキー */
+  .voice-marquee {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .voice-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 0.75rem;
+    height: 100%;
+    animation: voice-marquee 40s linear infinite;
+  }
+
+  .voice-marquee__track > * {
+    height: 100%;
+    width: auto;
+    aspect-ratio: 2 / 3;
+    flex-shrink: 0;
+  }
+
+  @keyframes voice-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .voice-marquee__track {
+      animation: none;
+    }
+  }
+
   /* 3Dパースペクティブ効果 */
   /* .perspective-normal {
     perspective: 1000px;

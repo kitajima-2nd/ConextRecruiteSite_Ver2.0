@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { companyData } from "@/library/GlobalDateConfig";
+import { animateScrollToId } from "@/lib/scroll/animateScrollTo";
 
 type MenuItem = {
   label: string;
@@ -34,6 +35,18 @@ const menuItems: MenuItem[] = [
 
 const linkClass =
   "text-xs font-medium uppercase tracking-[0.22em] text-neutral-600 transition-colors hover:text-neutral-950";
+
+function sectionIdFromHash(href: string): string {
+  return href.replace(/^#/, "");
+}
+
+function handleSectionNavClick(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  href: string
+) {
+  event.preventDefault();
+  void animateScrollToId(sectionIdFromHash(href), { durationMs: 900 });
+}
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -66,6 +79,9 @@ export default function Header() {
                         <li key={subIndex}>
                           <Link
                             href={subItem.href}
+                            onClick={(event) =>
+                              handleSectionNavClick(event, subItem.href)
+                            }
                             className="block px-4 py-2.5 text-xs uppercase tracking-[0.18em] text-neutral-600 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
                           >
                             {subItem.label}
@@ -76,14 +92,19 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link href={item.href!} className={linkClass}>
+                <Link
+                  href={item.href!}
+                  onClick={(event) => handleSectionNavClick(event, item.href!)}
+                  className={linkClass}
+                >
                   {item.label}
                 </Link>
               )}
             </div>
           ))}
           <Link
-            href="#entry"
+            href="#recruit"
+            onClick={(event) => handleSectionNavClick(event, "#recruit")}
             className="rounded-full bg-brand-red px-5 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-brand-red-deep"
           >
             Entry
@@ -131,7 +152,10 @@ export default function Header() {
                           <Link
                             href={subItem.href}
                             className="block py-2 pl-3 text-sm text-neutral-600"
-                            onClick={() => setIsMenuOpen(false)}
+                            onClick={(event) => {
+                              setIsMenuOpen(false);
+                              handleSectionNavClick(event, subItem.href);
+                            }}
                           >
                             {subItem.label}
                           </Link>
@@ -143,7 +167,10 @@ export default function Header() {
                   <Link
                     href={item.href!}
                     className="block py-2 text-xs uppercase tracking-[0.2em] text-neutral-700"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={(event) => {
+                      setIsMenuOpen(false);
+                      handleSectionNavClick(event, item.href!);
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -151,9 +178,12 @@ export default function Header() {
               </div>
             ))}
             <Link
-              href="#entry"
+              href="#recruit"
               className="mt-4 block rounded-full bg-brand-red px-6 py-3 text-center text-xs font-bold uppercase tracking-[0.18em] text-white transition-colors hover:bg-brand-red-deep"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(event) => {
+                setIsMenuOpen(false);
+                handleSectionNavClick(event, "#recruit");
+              }}
             >
               Entry
             </Link>
